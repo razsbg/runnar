@@ -5,7 +5,7 @@ import App from './App';
 
 import * as serviceWorker from './serviceWorker';
 
-import css from './assets/normalize.min.css';
+import './assets/normalize.min.css';
 import './scss/_main.scss';
 
 ReactDOM.render(
