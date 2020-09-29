@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "runnar",
+  "name": "runnar - plan your jogging routes",
   "icons": [
     {
       "src": "favicon.ico",
