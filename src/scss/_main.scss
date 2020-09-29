@@ -1,0 +1,66 @@
+@use './color-palette' as palette;
+
+html,
+body,
+#root,
+.app {
+  height: 100%;
+}
+
+body {
+  background-color: palette.$light;
+  color: palette.$dark;
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Signika', sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 600;
+}
+
+h5,
+h6 {
+  font-weight: 500;
+}
+
+.app {
+  display: grid;
+  grid-template-columns: 100px repeat(4, 1fr) 100px;
+  grid-template-rows: auto 1fr auto;
+}
+
+.header {
+  padding: 1em 2em;
+  border-bottom: 1px dashed darkgray;
+  grid-column: 1 / -1;
+  color: palette.$primary;
+}
+
+.main {
+  grid-column: 2 / -2;
+  justify-self: center;
+  font-size: 1.5rem;
+}
+
+.footer {
+  padding: 1em 2em;
+  border-top: 1px dashed darkgray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  grid-column: 1 / -1;
+
+  [role='img'] {
+    margin: 0 0.25em;
+  }
+}
