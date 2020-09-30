@@ -1,2 +1,3 @@
 # runnar 
-A React app that makes planing jogging laps easier for me &amp; my running partner.
+An app that make planing jogging laps easier for me &amp; My running partner.
+
