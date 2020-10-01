@@ -1,0 +1,36 @@
+@use "../color-palette" as palette;
+
+.lap {
+  padding: 0.5em 1em;
+  border: 1px solid palette.$dark;
+  display: flex;
+  flex-direction: column;
+
+  &.lap--dragging {
+    opacity: 0.75;
+    background-color: palette.$secondary;
+    color: white;
+  }
+
+  .lap-label {
+    font-weight: 600;
+
+    &:after {
+      content: ':';
+      margin-right: 0.25em;
+    }
+  }
+
+  .lap__side:after {
+    content: 'm,';
+    margin-right: 0.25em;
+  }
+
+  .lap__side:last-child:after {
+    content: 'm';
+  }
+
+  > * {
+    margin: 0;
+  }
+}
