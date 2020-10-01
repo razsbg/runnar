@@ -62,13 +62,18 @@ function RoutePlanner(props) {
   }
 
   return (
-    <div ref={drop} className="route-planner">
+    <div className="route-planner">
       <h2>RoutePlanner</h2>
-      {route.map((lapName) => (
-        <div className="route-lap">
-          <h3>{lapName}</h3>
-        </div>
-      ))}
+      <div
+        ref={drop}
+        className={`drop-zone ${isOver ? 'drop-zone--highlight' : ''}`}
+      >
+        {route.map((lapName) => (
+          <div className="route-lap">
+            <h3>{lapName}</h3>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
