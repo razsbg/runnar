@@ -70,8 +70,13 @@ h6 {
 
   .drag-sources {
     display: grid;
+    grid-template-rows: auto;
     grid-auto-rows: 100px;
     grid-row-gap: 15px;
+
+    > h2 {
+      margin: 0;
+    }
   }
 }
 
