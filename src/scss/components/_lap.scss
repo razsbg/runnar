@@ -5,6 +5,7 @@
   border: 1px solid palette.$dark;
   display: flex;
   flex-direction: column;
+  background-color: white;
 
   &.lap--dragging {
     opacity: 0.75;
