@@ -1,0 +1,37 @@
+@use "../color-palette" as palette;
+
+.route-lap {
+  padding: 0.5em 1em;
+  border: 1px solid palette.$secondary;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  font-size: 1.5rem;
+  background-color: palette.$light;
+  cursor: pointer;
+
+  h3 {
+    margin: 0;
+  }
+
+  &:after {
+    content: '❌';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    font-size: 1.5em;
+    transition: opacity 0.15s ease-in-out;
+    background-color: palette.$danger;
+  }
+
+  &:hover:after {
+    opacity: 0.9;
+  }
+}

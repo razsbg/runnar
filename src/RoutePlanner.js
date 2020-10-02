@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
 
+import RouteLap from './RouteLap';
+
 import { DragItemTypes, laps } from './constants';
 
 import './scss/components/_route-planner.scss';
@@ -83,14 +85,23 @@ function RoutePlanner() {
     return classNames.join(' ');
   }
 
+  function removeLap(index) {
+    const newRoute = [...route];
+    newRoute.splice(index, 1);
+    setRoute(newRoute);
+  }
+
   return (
     <div className="route-planner">
       <h2>RoutePlanner</h2>
       <div ref={drop} className={getDropzoneClassNames()}>
         {route.map((lapName, index) => (
-          <div key={index} className="route-lap">
-            <h3>{lapName}</h3>
-          </div>
+          <RouteLap
+            key={index}
+            index={index}
+            lapName={lapName}
+            removeLap={removeLap}
+          />
         ))}
       </div>
     </div>

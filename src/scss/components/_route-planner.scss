@@ -49,17 +49,3 @@
 .drop-zone--highlight:after {
   content: 'You can drop the lap here';
 }
-
-.route-lap {
-  padding: 0.5em 1em;
-  border: 1px solid palette.$secondary;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.5rem;
-  background-color: palette.$light;
-
-  h3 {
-    margin: 0;
-  }
-}
