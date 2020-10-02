@@ -2,10 +2,15 @@
 
 .lap {
   padding: 0.5em 1em;
-  border: 1px solid palette.$dark;
+  border: 2px solid palette.$dark;
   display: flex;
   flex-direction: column;
   background-color: white;
+  cursor: pointer;
+
+  &:hover {
+    border-color: palette.$primary;
+  }
 
   &.lap--dragging {
     opacity: 0.75;
