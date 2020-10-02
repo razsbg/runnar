@@ -5,7 +5,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import Lap from './Lap';
 import RoutePlanner from './RoutePlanner';
 
-import { laps } from './constants';
+import { laps } from '../constants';
 
 function Main() {
   return (
@@ -14,7 +14,7 @@ function Main() {
         <div className="drag-sources">
           <h2>Laps</h2>
           {Object.keys(laps).map((lap) => (
-            <Lap key={laps[lap].name} {...laps[lap]} />
+            <Lap key={laps[lap].name} lap={laps[lap]} />
           ))}
         </div>
         <RoutePlanner />

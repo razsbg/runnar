@@ -3,9 +3,9 @@ import { useDrop } from 'react-dnd';
 
 import RouteLap from './RouteLap';
 
-import { DragItemTypes, laps } from './constants';
+import { DragItemTypes, laps } from '../constants';
 
-import './scss/components/_route-planner.scss';
+import '../scss/components/_route-planner.scss';
 
 function RoutePlanner() {
   const [route, setRoute] = useState([]);
