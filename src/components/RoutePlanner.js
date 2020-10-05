@@ -92,7 +92,7 @@ function RoutePlanner() {
   }
 
   return (
-    <div className="route-planner">
+    <div className="route-planner" data-testid="route-planner">
       <h2>RoutePlanner</h2>
       <div ref={drop} className={getDropzoneClassNames()}>
         {route.map((lapName, index) => (

@@ -9,9 +9,9 @@ import { laps } from '../constants';
 
 function Main() {
   return (
-    <main className="main">
+    <main className="main" data-testid="main">
       <DndProvider backend={HTML5Backend}>
-        <div className="drag-sources">
+        <div className="drag-sources" data-testid="laps">
           <h2>Laps</h2>
           {Object.keys(laps).map((lap) => (
             <Lap key={laps[lap].name} lap={laps[lap]} />
