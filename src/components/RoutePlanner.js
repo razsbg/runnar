@@ -8,12 +8,12 @@ import { DragItemTypes, laps } from '../constants';
 import '../scss/components/_route-planner.scss';
 
 function RoutePlanner() {
-  const [route, setRoute] = useState([]);
+  const [jogRoute, setJogRoute] = useState([]);
 
   const [{ isOver: isOverDropZone, canDrop }, drop] = useDrop({
     accept: DragItemTypes.LAP,
     drop: (item) => {
-      setRoute([...route, item.name]);
+      setJogRoute([...jogRoute, item.name]);
     },
     canDrop: (item) => {
       if (isLapEligible(item)) {
@@ -31,8 +31,8 @@ function RoutePlanner() {
   function isLapEligible(lap) {
     var isEligible = true;
 
-    if (route.length !== 0) {
-      const currentLastLap = [...route].pop();
+    if (jogRoute.length !== 0) {
+      const currentLastLap = [...jogRoute].pop();
 
       switch (lap.name) {
         case 'small':
@@ -86,16 +86,16 @@ function RoutePlanner() {
   }
 
   function removeLap(index) {
-    const newRoute = [...route];
+    const newRoute = [...jogRoute];
     newRoute.splice(index, 1);
-    setRoute(newRoute);
+    setJogRoute(newRoute);
   }
 
   return (
     <div className="route-planner" data-testid="route-planner">
       <h2>RoutePlanner</h2>
       <div ref={drop} className={getDropzoneClassNames()}>
-        {route.map((lapName, index) => (
+        {jogRoute.map((lapName, index) => (
           <RouteLap
             key={index}
             index={index}

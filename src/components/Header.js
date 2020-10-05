@@ -1,16 +1,25 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Header() {
   return (
     <header className="header" data-testid="header">
       <div className="logo" data-testid="logo">
-        <h1>runnar</h1>
+        <h1>
+          <Link to="/">runnar</Link>
+        </h1>
       </div>
-      <nav className="nav" data-testid="main-nav">
+      <nav className="nav" role="navigation">
         <ul>
-          <li>Explore</li>
-          <li>Create</li>
-          <li>My jog routes</li>
+          <li>
+            <Link to="/explore">Explore</Link>
+          </li>
+          <li>
+            <Link to="/create">Plan a route</Link>
+          </li>
+          <li>
+            <Link to="/profile">My profile</Link>
+          </li>
         </ul>
       </nav>
     </header>
