@@ -53,3 +53,17 @@
   background-color: rgba(0, 0, 0, 0.75);
   color: white;
 }
+
+.route-planner__length {
+  font-size: 1.75em;
+  font-weight: 600;
+
+  .label {
+    font-weight: 500;
+
+    &:after {
+      content: ':';
+      margin-right: 0.25em;
+    }
+  }
+}
