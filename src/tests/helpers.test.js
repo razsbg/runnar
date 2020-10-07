@@ -5,6 +5,7 @@ test('formatDistanceInKms - properly formats a number', () => {
 });
 
 test('formatDistanceInKms - returns NaN if param is anything other than number/string', () => {
+  expect(formatDistanceInKms()).toBe(NaN);
   expect(formatDistanceInKms('1620')).toBe(NaN);
   expect(formatDistanceInKms(NaN)).toBe(NaN);
   expect(formatDistanceInKms(undefined)).toBe(NaN);
