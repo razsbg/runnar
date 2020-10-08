@@ -34,17 +34,21 @@ $easeInOut: cubic-bezier(0.42, 0, 0.58, 1);
 }
 
 .route-lap {
-  padding: 0.5em 1em;
+  padding: 0.5em 1.5em 0.5em 1em;
   border: 1px solid palette.$secondary;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   position: relative;
   font-size: 1.25rem;
   background-color: palette.$light;
   cursor: pointer;
   animation: swoop-in-left 0.25s forwards;
+
+  .order {
+    position: absolute;
+    bottom: 2px;
+    right: 0;
+    font-size: 1.5em;
+    color: palette.$darker;
+  }
 
   &:after {
     content: '❌';

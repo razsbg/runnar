@@ -113,6 +113,7 @@ function RoutePlanner() {
             lapName={lap.name}
             length={lap.length}
             removeLap={removeLap}
+            className={`route-lap--${lap.name}`}
           />
         ))}
       </div>
