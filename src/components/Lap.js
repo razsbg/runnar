@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { useDrag } from 'react-dnd';
 
 import { DragItemTypes } from '../constants';
+import { formatDistanceInKms } from '../helpers';
 
 import '../scss/components/_lap.scss';
-import { formatDistanceInKms } from '../helpers';
 
 function Lap(props) {
   const { lap } = props;
@@ -22,7 +22,11 @@ function Lap(props) {
   });
 
   return (
-    <div ref={drag} className={`lap ${isDragging ? 'lap--dragging' : ''}`}>
+    <div
+      ref={drag}
+      className={`lap${isDragging ? ' lap--dragging' : ''}`}
+      data-testid={`lap-${lap.name}`}
+    >
       <h3>{lap.name}</h3>
       <p>Total length: {formatDistanceInKms(props.lap.getLapLength())}km</p>
     </div>

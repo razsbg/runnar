@@ -101,7 +101,11 @@ function RoutePlanner() {
   return (
     <div className="route-planner" data-testid="route-planner">
       <h2>Route planner</h2>
-      <div ref={drop} className={getDropzoneClassNames()}>
+      <div
+        ref={drop}
+        className={getDropzoneClassNames()}
+        data-testid="drop-zone"
+      >
         {jogRoute.map((lap, index) => (
           <RouteLap
             key={index}
