@@ -4,6 +4,7 @@ import { useDrop } from 'react-dnd';
 import RouteLap from './RouteLap';
 
 import { DragItemTypes, laps } from '../constants';
+import { formatDistanceInKms } from '../helpers';
 
 import '../scss/components/_route-planner.scss';
 
@@ -13,7 +14,7 @@ function RoutePlanner() {
   const [{ isOver: isOverDropZone, canDrop }, drop] = useDrop({
     accept: DragItemTypes.LAP,
     drop: (item) => {
-      setJogRoute([...jogRoute, item.name]);
+      setJogRoute([...jogRoute, { name: item.name, length: item.length }]);
     },
     canDrop: (item) => {
       if (isLapEligible(item)) {
@@ -38,22 +39,22 @@ function RoutePlanner() {
         case 'small':
         case 'medium':
         case 'large':
-          if (currentLastLap === laps.xxlarge.name) {
+          if (currentLastLap.name === laps.xxlarge.name) {
             isEligible = false;
           }
 
           break;
         case 'xlarge':
-          if (currentLastLap === laps.medium.name) {
+          if (currentLastLap.name === laps.medium.name) {
             isEligible = false;
           }
 
           break;
         case 'xxlarge':
           if (
-            currentLastLap === laps.small.name ||
-            currentLastLap === laps.medium.name ||
-            currentLastLap === laps.large.name
+            currentLastLap.name === laps.small.name ||
+            currentLastLap.name === laps.medium.name ||
+            currentLastLap.name === laps.large.name
           ) {
             isEligible = false;
           }
@@ -86,24 +87,41 @@ function RoutePlanner() {
   }
 
   function removeLap(index) {
-    const newRoute = [...jogRoute];
-    newRoute.splice(index, 1);
-    setJogRoute(newRoute);
+    const newJogRoute = [...jogRoute];
+    newJogRoute.splice(index, 1);
+    setJogRoute(newJogRoute);
+  }
+
+  function getJogRouteLength() {
+    const jogRouteLength = jogRoute.reduce((acc, curr) => acc + curr.length, 0);
+
+    return formatDistanceInKms(jogRouteLength);
   }
 
   return (
     <div className="route-planner" data-testid="route-planner">
-      <h2>RoutePlanner</h2>
-      <div ref={drop} className={getDropzoneClassNames()}>
-        {jogRoute.map((lapName, index) => (
+      <h2>Route planner</h2>
+      <div
+        ref={drop}
+        className={getDropzoneClassNames()}
+        data-testid="drop-zone"
+      >
+        {jogRoute.map((lap, index) => (
           <RouteLap
             key={index}
             index={index}
-            lapName={lapName}
+            lapName={lap.name}
+            length={lap.length}
             removeLap={removeLap}
           />
         ))}
       </div>
+      {jogRoute.length >= 1 && (
+        <p className="route-planner__length">
+          <span className="label">Total length</span>
+          {getJogRouteLength()} km
+        </p>
+      )}
     </div>
   );
 }

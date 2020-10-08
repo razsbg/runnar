@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, cleanup } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Router } from 'react-router-dom';
 import { createMemoryHistory } from 'history';
@@ -7,7 +7,7 @@ import { createMemoryHistory } from 'history';
 import Main from '../Main';
 import Header from '../Header';
 
-test('renders main correctly', () => {
+test('renders correctly', () => {
   const leftClick = { button: 0 };
   const history = createMemoryHistory();
   const { getByText, getByTestId } = render(
