@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import firebase from 'firebase';
 
 import Header from './Header';
 import Main from './Main';
@@ -19,10 +20,20 @@ function App() {
     });
   }
 
+  async function logOut() {
+    await firebase.auth().signOut();
+
+    setUser({
+      uid: null,
+      displayName: null,
+      photoUrl: null,
+    });
+  }
+
   return (
     <div className="app">
-      <Header authHandler={authHandler} uid={user.uid} />
-      <Main />
+      <Header authHandler={authHandler} logOut={logOut} uid={user.uid} />
+      <Main user={user} />
       <Footer />
     </div>
   );

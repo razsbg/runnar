@@ -27,13 +27,20 @@ function Header(props) {
             <Link to="/create">Plan a route</Link>
           </li>
 
-          <li>
-            {props.uid ? (
-              <Link to="/profile">My profile</Link>
-            ) : (
+          {props.uid ? (
+            <>
+              <li>
+                <Link to="/profile">My profile</Link>
+              </li>
+              <li>
+                <button onClick={props.logOut}>Log out</button>
+              </li>
+            </>
+          ) : (
+            <li>
               <button onClick={authenticate}>Log in with Google</button>
-            )}
-          </li>
+            </li>
+          )}
         </ul>
       </nav>
     </header>
@@ -41,8 +48,9 @@ function Header(props) {
 }
 
 Header.propTypes = {
+  uid: PropTypes.string,
   authHandler: PropTypes.func.isRequired,
-  user: PropTypes.string,
+  logOut: PropTypes.func.isRequired,
 };
 
 export default Header;
