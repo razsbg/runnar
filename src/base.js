@@ -1,4 +1,3 @@
-import Rebase from 're-base';
 import firebase from 'firebase';
 
 const firebaseApp = firebase.initializeApp({
@@ -7,8 +6,4 @@ const firebaseApp = firebase.initializeApp({
   databaseURL: 'https://runnar-1592f.firebaseio.com',
 });
 
-const base = Rebase.createClass(firebaseApp.database());
-
 export { firebaseApp };
-
-export default base;
