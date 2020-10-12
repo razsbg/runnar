@@ -1,9 +1,11 @@
 import firebase from 'firebase';
 
+import config from './config';
+
 const firebaseApp = firebase.initializeApp({
-  apiKey: 'AIzaSyA48ApK0MJABPiGSo5I1xaAJnSSB5DLMOc',
-  authDomain: 'runnar-1592f.firebaseapp.com',
-  databaseURL: 'https://runnar-1592f.firebaseio.com',
+  apiKey: config.firebase.apiKey,
+  authDomain: config.firebase.authDomain,
+  databaseURL: config.firebase.databaseURL,
 });
 
 export { firebaseApp };
