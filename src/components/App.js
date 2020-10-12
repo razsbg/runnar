@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import firebase from 'firebase';
 
 import Header from './Header';
@@ -11,6 +11,14 @@ function App() {
     displayName: null,
     photoUrl: null,
   });
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        authHandler({ user });
+      }
+    });
+  }, []);
 
   function authHandler(authData) {
     setUser({
