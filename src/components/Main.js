@@ -9,6 +9,7 @@ import RoutePlanner from './RoutePlanner';
 import Explore from './Explore';
 import Home from './Home';
 import Profile from './Profile';
+import NotFound from './NotFound';
 
 function Main(props) {
   return (
@@ -21,13 +22,25 @@ function Main(props) {
           <Explore />
         </Route>
         <Route exact path="/profile">
-          <Profile user={props.user} />
+          {props.user ? (
+            <Profile user={props.user} />
+          ) : props.loading ? (
+            <h3>Loading...</h3>
+          ) : (
+            <NotFound />
+          )}
         </Route>
         <Route exact path="/create">
-          <DndProvider backend={HTML5Backend}>
-            <Laps />
-            <RoutePlanner />
-          </DndProvider>
+          {props.user ? (
+            <DndProvider backend={HTML5Backend}>
+              <Laps />
+              <RoutePlanner />
+            </DndProvider>
+          ) : props.loading ? (
+            <h3>Loading...</h3>
+          ) : (
+            <NotFound />
+          )}
         </Route>
       </Switch>
     </main>
@@ -35,11 +48,7 @@ function Main(props) {
 }
 
 Main.propTypes = {
-  user: PropTypes.shape({
-    uid: PropTypes.string,
-    displayName: PropTypes.string,
-    photoUrl: PropTypes.string,
-  }).isRequired,
+  user: PropTypes.object,
 };
 
 export default Main;
