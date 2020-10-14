@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useHistory } from 'react-router-dom';
 import firebase from 'firebase/app';
-import { useAuthState } from 'react-firebase-hooks/auth';
 
 function Header(props) {
   const history = useHistory();
