@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Route, Switch } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
@@ -9,7 +10,7 @@ import Explore from './Explore';
 import Home from './Home';
 import Profile from './Profile';
 
-function Main() {
+function Main(props) {
   return (
     <main className="main" data-testid="main">
       <Switch>
@@ -20,7 +21,7 @@ function Main() {
           <Explore />
         </Route>
         <Route exact path="/profile">
-          <Profile />
+          <Profile user={props.user} />
         </Route>
         <Route exact path="/create">
           <DndProvider backend={HTML5Backend}>
@@ -32,5 +33,13 @@ function Main() {
     </main>
   );
 }
+
+Main.propTypes = {
+  user: PropTypes.shape({
+    uid: PropTypes.string,
+    displayName: PropTypes.string,
+    photoUrl: PropTypes.string,
+  }).isRequired,
+};
 
 export default Main;

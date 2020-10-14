@@ -1,11 +1,35 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 
-function Profile() {
+import '../scss/components/_profile.scss';
+
+function Profile(props) {
+  const [biggerPhotoUrl, setBiggerPhotoUrl] = useState();
+
+  useEffect(() => {
+    if (props.user.photoUrl !== null) {
+      setBiggerPhotoUrl(props.user.photoUrl.replace('=s96', '=s256'));
+    }
+  }, [props.user.photoUrl]);
+
   return (
     <div className="profile">
-      <h3>This is the profile page</h3>
+      <div className="user">
+        {biggerPhotoUrl && (
+          <img src={biggerPhotoUrl} alt={props.user.displayName} />
+        )}
+        <h2>{props.user.displayName}</h2>
+      </div>
     </div>
   );
 }
+
+Profile.propTypes = {
+  user: PropTypes.shape({
+    uid: PropTypes.string,
+    displayName: PropTypes.string,
+    photoUrl: PropTypes.string,
+  }).isRequired,
+};
 
 export default Profile;

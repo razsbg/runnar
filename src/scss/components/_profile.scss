@@ -1,0 +1,21 @@
+@use "../color-palette" as palette;
+
+.profile {
+  grid-column: 1 / -1;
+
+  .user {
+    display: flex;
+    align-items: center;
+    grid-gap: 1.25rem;
+
+    img {
+      padding: 0.15rem;
+      border: 2px solid palette.$primary;
+      border-radius: 50%;
+    }
+
+    h2 {
+      font-size: 2.5rem;
+    }
+  }
+}
