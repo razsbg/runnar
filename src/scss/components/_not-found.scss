@@ -1,0 +1,14 @@
+.not-found {
+  padding: 2rem 3rem;
+  border-radius: 7px;
+  grid-column: 1 / -1;
+  align-self: center;
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  background-color: rgba(23, 190, 187, 0.7);
+  text-shadow: -1px 3px rgba(0, 0, 0, 0.85);
+  box-shadow: -5px 7px 0px 0px rgba(0, 0, 0, 0.8);
+}
