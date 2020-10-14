@@ -1,47 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import firebase from 'firebase';
+import 'firebase/auth';
+import { useAuthState } from 'react-firebase-hooks/auth';
+
+import config from '../config';
 
 import Header from './Header';
 import Main from './Main';
 import Footer from './Footer';
 
+firebase.initializeApp({
+  apiKey: config.firebase.apiKey,
+  authDomain: config.firebase.authDomain,
+  databaseURL: config.firebase.databaseURL,
+});
+
+const auth = firebase.auth();
+
 function App() {
-  const [user, setUser] = useState({
-    uid: null,
-    displayName: null,
-    photoUrl: null,
-  });
-
-  useEffect(() => {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        authHandler({ user });
-      }
-    });
-  }, []);
-
-  function authHandler(authData) {
-    setUser({
-      uid: authData.user.uid,
-      displayName: authData.user.displayName,
-      photoUrl: authData.user.photoURL,
-    });
-  }
-
-  async function logOut() {
-    await firebase.auth().signOut();
-
-    setUser({
-      uid: null,
-      displayName: null,
-      photoUrl: null,
-    });
-  }
+  const [user, loading] = useAuthState(auth);
 
   return (
     <div className="app">
-      <Header authHandler={authHandler} logOut={logOut} uid={user.uid} />
-      <Main user={user} />
+      <Header auth={auth} user={user} loading={loading} />
+      <Main loading={loading} user={user} />
       <Footer />
     </div>
   );

@@ -1,14 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import firebase from 'firebase/app';
-
-import { firebaseApp } from '../base';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 function Header(props) {
-  function authenticate() {
-    const authProvider = new firebase.auth.GoogleAuthProvider();
-    firebaseApp.auth().signInWithPopup(authProvider).then(props.authHandler);
+  const history = useHistory();
+
+  async function signInWithGoogle() {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    await props.auth.signInWithPopup(provider);
+
+    if (!props.loading) {
+      history.push('/profile');
+    }
+  }
+
+  function logOut() {
+    props.auth.signOut();
+    history.push('/');
   }
 
   return (
@@ -23,22 +33,21 @@ function Header(props) {
           <li>
             <Link to="/explore">Explore</Link>
           </li>
-          <li>
-            <Link to="/create">Plan a route</Link>
-          </li>
-
-          {props.uid ? (
+          {props.user ? (
             <>
+              <li>
+                <Link to="/create">Plan a route</Link>
+              </li>
               <li>
                 <Link to="/profile">My profile</Link>
               </li>
               <li>
-                <button onClick={props.logOut}>Log out</button>
+                <button onClick={logOut}>Log out</button>
               </li>
             </>
           ) : (
             <li>
-              <button onClick={authenticate}>Log in with Google</button>
+              <button onClick={signInWithGoogle}>Log in with Google</button>
             </li>
           )}
         </ul>
@@ -48,9 +57,9 @@ function Header(props) {
 }
 
 Header.propTypes = {
-  uid: PropTypes.string,
-  authHandler: PropTypes.func.isRequired,
-  logOut: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  user: PropTypes.object,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default Header;
