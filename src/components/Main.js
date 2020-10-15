@@ -34,7 +34,7 @@ function Main(props) {
           {props.user ? (
             <DndProvider backend={HTML5Backend}>
               <Laps />
-              <RoutePlanner />
+              <RoutePlanner uid={props.user.uid} db={props.db} />
             </DndProvider>
           ) : props.loading ? (
             <h3>Loading...</h3>
@@ -49,6 +49,7 @@ function Main(props) {
 
 Main.propTypes = {
   user: PropTypes.object,
+  db: PropTypes.object,
 };
 
 export default Main;

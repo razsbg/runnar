@@ -1,5 +1,5 @@
 import React from 'react';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
@@ -16,6 +16,7 @@ firebase.initializeApp({
 });
 
 const auth = firebase.auth();
+const db = firebase.database();
 
 function App() {
   const [user, loading] = useAuthState(auth);
@@ -23,7 +24,7 @@ function App() {
   return (
     <div className="app">
       <Header auth={auth} user={user} loading={loading} />
-      <Main loading={loading} user={user} />
+      <Main loading={loading} user={user} db={db} />
       <Footer />
     </div>
   );

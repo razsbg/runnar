@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
+import firebase from 'firebase/app';
+import 'firebase/database';
 
 import RouteLap from './RouteLap';
 
@@ -8,7 +11,7 @@ import { formatDistanceInKms } from '../helpers';
 
 import '../scss/components/_route-planner.scss';
 
-function RoutePlanner() {
+function RoutePlanner(props) {
   const [jogRoute, setJogRoute] = useState([]);
 
   const [{ isOver: isOverDropZone, canDrop }, drop] = useDrop({
@@ -98,9 +101,36 @@ function RoutePlanner() {
     return formatDistanceInKms(jogRouteLength);
   }
 
+  function clearJogRoute() {
+    setJogRoute([]);
+  }
+
+  function saveJogRoute() {
+    var laps = jogRoute.map(function keepOnlyName(lap) {
+      return lap.name;
+    });
+
+    const jogRouteKey = firebase.database().ref().child('jogRoutes').push().key;
+
+    var payload = {
+      owners: props.uid,
+      laps,
+      length: getJogRouteLength(),
+    };
+
+    props.db.ref(`/jog-routes/${jogRouteKey}`).set(payload);
+    props.db.ref(`/user-jog-routes/${props.uid}/${jogRouteKey}`).set(payload);
+
+    clearJogRoute();
+  }
+
   return (
     <div className="route-planner" data-testid="route-planner">
       <h2>Route planner</h2>
+      {jogRoute.length > 1 && (
+        <button onClick={saveJogRoute}>Save route</button>
+      )}
+      <button onClick={clearJogRoute}>Clear jog route</button>
       <div
         ref={drop}
         className={getDropzoneClassNames()}
@@ -126,5 +156,10 @@ function RoutePlanner() {
     </div>
   );
 }
+
+RoutePlanner.propTypes = {
+  db: PropTypes.object.isRequired,
+  uid: PropTypes.string.isRequired,
+};
 
 export default RoutePlanner;
