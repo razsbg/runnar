@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import 'firebase/firestore';
 
 import config from '../config';
 
@@ -13,18 +13,18 @@ firebase.initializeApp({
   apiKey: config.firebase.apiKey,
   authDomain: config.firebase.authDomain,
   databaseURL: config.firebase.databaseURL,
+  projectId: config.firebase.projectId,
 });
 
 const auth = firebase.auth();
-const db = firebase.database();
+const firestore = firebase.firestore();
 
 function App() {
-  const [user, loading] = useAuthState(auth);
-
+  const joggersRef = firestore.collection('joggers');
   return (
     <div className="app">
-      <Header auth={auth} user={user} loading={loading} />
-      <Main loading={loading} user={user} db={db} />
+      <Header auth={auth} joggersRef={joggersRef} />
+      {/* <Main loading={loading} user={user} db={db} /> */}
       <Footer />
     </div>
   );
