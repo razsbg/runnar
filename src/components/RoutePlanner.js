@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
 import firebase from 'firebase/app';
-import 'firebase/database';
 
 import RouteLap from './RouteLap';
 
@@ -13,6 +12,10 @@ import '../scss/components/_route-planner.scss';
 
 function RoutePlanner(props) {
   const [jogRoute, setJogRoute] = useState([]);
+  const newJogRouteRef = props.firestore.collection('jogRoutes').doc();
+  const currentJoggerRef = props.firestore
+    .collection('joggers')
+    .doc(props.user.uid);
 
   const [{ isOver: isOverDropZone, canDrop }, drop] = useDrop({
     accept: DragItemTypes.LAP,
@@ -106,20 +109,27 @@ function RoutePlanner(props) {
   }
 
   function saveJogRoute() {
-    var laps = jogRoute.map(function keepOnlyName(lap) {
+    var laps = jogRoute.map(function getName(lap) {
       return lap.name;
     });
+    var jogRouteLength = getJogRouteLength();
 
-    const jogRouteKey = firebase.database().ref().child('jogRoutes').push().key;
-
-    var payload = {
-      owners: props.uid,
+    var newJogRoute = {
+      owner: {
+        displayName: props.user.displayName,
+        uid: props.user.uid,
+      },
       laps,
-      length: getJogRouteLength(),
+      length: jogRouteLength,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
-    props.db.ref(`/jog-routes/${jogRouteKey}`).set(payload);
-    props.db.ref(`/user-jog-routes/${props.uid}/${jogRouteKey}`).set(payload);
+    // TODO
+    // create batched writes here
+    newJogRouteRef.set(newJogRoute);
+    currentJoggerRef.update({
+      jogRoutes: firebase.firestore.FieldValue.increment(1),
+    });
 
     clearJogRoute();
   }
@@ -158,8 +168,8 @@ function RoutePlanner(props) {
 }
 
 RoutePlanner.propTypes = {
-  db: PropTypes.object.isRequired,
-  uid: PropTypes.string.isRequired,
+  firestore: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default RoutePlanner;

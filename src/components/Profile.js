@@ -1,15 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import firebase from 'firebase/app';
-import { useList } from 'react-firebase-hooks/database';
+import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
 
 import '../scss/components/_profile.scss';
 
 function Profile(props) {
-  const reference = firebase
-    .database()
-    .ref(`user-jog-routes/${props.user.uid}`);
-  const [snapshots, loading] = useList(reference);
+  const jogRoutesRef = props.firestore.collection('jogRoutes');
+  const currentUserIsOwnerQuery = jogRoutesRef.where(
+    'owner.uid',
+    '==',
+    props.user.uid
+  );
+  const [snapshots, loading] = useCollectionDataOnce(
+    currentUserIsOwnerQuery,
+    jogRoutesRef
+  );
 
   return (
     <div className="profile">
@@ -21,16 +26,13 @@ function Profile(props) {
         <h3>Loading...</h3>
       ) : (
         <div className="jog-routes">
-          {snapshots.map((jogRoute) => (
-            <div className="jog-routes__item">
-              <p>Key: {jogRoute.key}</p>
-              <p>
-                Laps:{' '}
-                {jogRoute.val().laps.map((lapName) => (
-                  <span>{lapName}</span>
-                ))}
-              </p>
-              <p>Length: {jogRoute.val().length}km</p>
+          {snapshots.map((jogRoute, index) => (
+            <div key={index} className="jog-routes__item">
+              {/* TODO
+                  Properly format createdAt
+               */}
+              <p>Laps: {jogRoute.laps.length}</p>
+              <p>Length: {jogRoute.length}km</p>
             </div>
           ))}
         </div>
@@ -41,6 +43,7 @@ function Profile(props) {
 
 Profile.propTypes = {
   user: PropTypes.object.isRequired,
+  firestore: PropTypes.object.isRequired,
 };
 
 export default Profile;

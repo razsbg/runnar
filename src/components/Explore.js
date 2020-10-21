@@ -1,35 +1,40 @@
 import React from 'react';
-import firebase from 'firebase/app';
-import { useList } from 'react-firebase-hooks/database';
+import PropTypes from 'prop-types';
+import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import '../scss/components/_explore.scss';
 
-function Explore() {
-  const reference = firebase.database().ref('/jog-routes');
-  const [snapshots, loading] = useList(reference);
+function Explore(props) {
+  const jogRoutesRef = props.firestore.collection('jogRoutes');
+  const [snapshots, loading] = useCollectionData(jogRoutesRef);
 
   return (
     <div className="explore">
-      <h3>This is the explore routes page</h3>
+      <h3>Explore jogging routes</h3>
       {loading ? (
-        <h3>Loading...</h3>
+        <h4>Loading...</h4>
       ) : (
-        snapshots.map((jogRoute) => (
-          <div key={jogRoute.key} className="jog-route">
-            {console.log(jogRoute.val())}
-            <p>Owner: {jogRoute.val().owners}</p>
-            <p>
-              Laps:{' '}
-              {jogRoute.val().laps.map((lapName) => (
-                <span>{lapName}</span>
-              ))}
-            </p>
-            <p>Length: {jogRoute.val().length}km</p>
-          </div>
-        ))
+        <div className="explore__routes">
+          {snapshots.map((jogRoute, index) => (
+            <div key={index} className="jog-route">
+              <p>
+                <span>Created by: {jogRoute.owner.displayName}</span>
+                {/*TODO
+                  Format creatAt properly
+                 */}
+              </p>
+              <p className="jog-route__laps">Laps: {jogRoute.laps.length}</p>
+              <p>Length: {jogRoute.length}km</p>
+            </div>
+          ))}
+        </div>
       )}
     </div>
   );
 }
+
+Explore.propTypes = {
+  firestore: PropTypes.object.isRequired,
+};
 
 export default Explore;

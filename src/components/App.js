@@ -20,11 +20,10 @@ const auth = firebase.auth();
 const firestore = firebase.firestore();
 
 function App() {
-  const joggersRef = firestore.collection('joggers');
   return (
     <div className="app">
-      <Header auth={auth} joggersRef={joggersRef} />
-      {/* <Main loading={loading} user={user} db={db} /> */}
+      <Header auth={auth} firestore={firestore} />
+      <Main auth={auth} firestore={firestore} />
       <Footer />
     </div>
   );

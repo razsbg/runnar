@@ -7,22 +7,23 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 function Header(props) {
   const [user, loading] = useAuthState(props.auth);
   const history = useHistory();
+  const joggersRef = props.firestore.collection('joggers');
 
   async function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    await props.auth
-      .signInWithPopup(provider)
-      .then(function addNewUser(authData) {
-        if (authData.additionalUserInfo.isNewUser) {
-          props.joggersRef.doc(`${authData.user.uid}`).set({
-            displayName: authData.user.displayName,
-            jogRoutes: [],
-          });
-        }
-      });
+    await props.auth.signInWithPopup(provider).then(addNewUser);
 
     if (!loading) {
       history.push('/profile');
+    }
+  }
+
+  function addNewUser(authData) {
+    if (authData.additionalUserInfo.isNewUser) {
+      joggersRef.doc(`${authData.user.uid}`).set({
+        displayName: authData.user.displayName,
+        jogRoutes: 0,
+      });
     }
   }
 
@@ -68,6 +69,7 @@ function Header(props) {
 
 Header.propTypes = {
   auth: PropTypes.object.isRequired,
+  firestore: PropTypes.object.isRequired,
 };
 
 export default Header;
