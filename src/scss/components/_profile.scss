@@ -1,9 +1,11 @@
 @use "../color-palette" as palette;
+@use "../mixins/jog-route" as *;
 
 .profile {
   grid-column: 1 / -1;
 
   .user {
+    margin-bottom: 2.5rem;
     display: flex;
     align-items: center;
     grid-gap: 1.25rem;
@@ -16,6 +18,20 @@
 
     h2 {
       font-size: 2.5rem;
+    }
+  }
+
+  .jog-routes {
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 20px;
+
+    h3 {
+      width: 100%;
+    }
+
+    .jog-routes__item {
+      @include jog-route;
     }
   }
 }

@@ -26,6 +26,7 @@ function Profile(props) {
         <h3>Loading...</h3>
       ) : (
         <div className="jog-routes">
+          <h3>Your jog routes</h3>
           {snapshots.map((jogRoute, index) => (
             <div key={index} className="jog-routes__item">
               {/* TODO
