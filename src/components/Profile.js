@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
 
+import { formatFirebaseTimestamp } from '../helpers';
+
 import '../scss/components/_profile.scss';
 
 function Profile(props) {
@@ -29,9 +31,7 @@ function Profile(props) {
           <h3>Your jog routes</h3>
           {snapshots.map((jogRoute, index) => (
             <div key={index} className="jog-routes__item">
-              {/* TODO
-                  Properly format createdAt
-               */}
+              <p>Created@{formatFirebaseTimestamp(jogRoute.createdAt)}</p>
               <p>Laps: {jogRoute.laps.length}</p>
               <p>Length: {jogRoute.length}km</p>
             </div>

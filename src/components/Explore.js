@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
+import { formatFirebaseTimestamp } from '../helpers';
+
 import '../scss/components/_explore.scss';
 
 function Explore(props) {
@@ -19,10 +21,8 @@ function Explore(props) {
             <div key={index} className="jog-route">
               <p>
                 <span>Created by: {jogRoute.owner.displayName}</span>
-                {/*TODO
-                  Format creatAt properly
-                 */}
               </p>
+              <p>@{formatFirebaseTimestamp(jogRoute.createdAt)}</p>
               <p className="jog-route__laps">Laps: {jogRoute.laps.length}</p>
               <p>Length: {jogRoute.length}km</p>
             </div>
