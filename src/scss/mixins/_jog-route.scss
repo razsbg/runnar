@@ -1,0 +1,11 @@
+@use "../color-palette" as palette;
+
+@mixin jog-route {
+  padding: 0.75rem;
+  border: 1px solid palette.$dark;
+  background-color: white;
+
+  > *:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+}

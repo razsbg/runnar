@@ -1,7 +1,7 @@
 import React from 'react';
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/auth';
-import { useAuthState } from 'react-firebase-hooks/auth';
+import 'firebase/firestore';
 
 import config from '../config';
 
@@ -13,17 +13,17 @@ firebase.initializeApp({
   apiKey: config.firebase.apiKey,
   authDomain: config.firebase.authDomain,
   databaseURL: config.firebase.databaseURL,
+  projectId: config.firebase.projectId,
 });
 
 const auth = firebase.auth();
+const firestore = firebase.firestore();
 
 function App() {
-  const [user, loading] = useAuthState(auth);
-
   return (
     <div className="app">
-      <Header auth={auth} user={user} loading={loading} />
-      <Main loading={loading} user={user} />
+      <Header auth={auth} firestore={firestore} />
+      <Main auth={auth} firestore={firestore} />
       <Footer />
     </div>
   );

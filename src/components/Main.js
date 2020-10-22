@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 import Laps from './Laps';
 import RoutePlanner from './RoutePlanner';
@@ -12,6 +13,8 @@ import Profile from './Profile';
 import NotFound from './NotFound';
 
 function Main(props) {
+  const [user, loading] = useAuthState(props.auth);
+
   return (
     <main className="main" data-testid="main">
       <Switch>
@@ -19,36 +22,38 @@ function Main(props) {
           <Home />
         </Route>
         <Route exact path="/explore">
-          <Explore />
+          <Explore firestore={props.firestore} />
         </Route>
         <Route exact path="/profile">
-          {props.user ? (
-            <Profile user={props.user} />
-          ) : props.loading ? (
+          {loading ? (
             <h3>Loading...</h3>
+          ) : user ? (
+            <Profile user={user} firestore={props.firestore} />
           ) : (
-            <NotFound />
+            <Redirect from="/profile" to="/" />
           )}
         </Route>
         <Route exact path="/create">
-          {props.user ? (
+          {loading ? (
+            <h3>Loading...</h3>
+          ) : user ? (
             <DndProvider backend={HTML5Backend}>
               <Laps />
-              <RoutePlanner />
+              <RoutePlanner user={user} firestore={props.firestore} />
             </DndProvider>
-          ) : props.loading ? (
-            <h3>Loading...</h3>
           ) : (
-            <NotFound />
+            <Redirect from="/create" to="/" />
           )}
         </Route>
+        <NotFound />
       </Switch>
     </main>
   );
 }
 
 Main.propTypes = {
-  user: PropTypes.object,
+  auth: PropTypes.object.isRequired,
+  firestore: PropTypes.object.isRequired,
 };
 
 export default Main;

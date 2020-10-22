@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
+import firebase from 'firebase/app';
 
 import RouteLap from './RouteLap';
 
@@ -8,8 +10,12 @@ import { formatDistanceInKms } from '../helpers';
 
 import '../scss/components/_route-planner.scss';
 
-function RoutePlanner() {
+function RoutePlanner(props) {
   const [jogRoute, setJogRoute] = useState([]);
+  const newJogRouteRef = props.firestore.collection('jogRoutes').doc();
+  const currentJoggerRef = props.firestore
+    .collection('joggers')
+    .doc(props.user.uid);
 
   const [{ isOver: isOverDropZone, canDrop }, drop] = useDrop({
     accept: DragItemTypes.LAP,
@@ -98,9 +104,51 @@ function RoutePlanner() {
     return formatDistanceInKms(jogRouteLength);
   }
 
+  function clearJogRoute() {
+    setJogRoute([]);
+  }
+
+  function saveJogRoute() {
+    var batch = props.firestore.batch();
+    var laps = jogRoute.map(function getName(lap) {
+      return lap.name;
+    });
+    var jogRouteLength = getJogRouteLength();
+
+    var newJogRoute = {
+      owner: {
+        displayName: props.user.displayName,
+        uid: props.user.uid,
+      },
+      laps,
+      length: jogRouteLength,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+    };
+
+    batch.set(newJogRouteRef, newJogRoute);
+    batch.update(currentJoggerRef, {
+      jogRoutes: firebase.firestore.FieldValue.increment(1),
+    });
+
+    batch
+      .commit()
+      .then(function success() {
+        console.log('Batch writes successfully commited ✨!');
+      })
+      .catch(function error(err) {
+        console.error('Batch write failed 🚧! Reason:', err);
+      });
+
+    clearJogRoute();
+  }
+
   return (
     <div className="route-planner" data-testid="route-planner">
       <h2>Route planner</h2>
+      {jogRoute.length > 1 && (
+        <button onClick={saveJogRoute}>Save route</button>
+      )}
+      <button onClick={clearJogRoute}>Clear jog route</button>
       <div
         ref={drop}
         className={getDropzoneClassNames()}
@@ -126,5 +174,10 @@ function RoutePlanner() {
     </div>
   );
 }
+
+RoutePlanner.propTypes = {
+  firestore: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+};
 
 export default RoutePlanner;

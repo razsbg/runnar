@@ -2,22 +2,33 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link, useHistory } from 'react-router-dom';
 import firebase from 'firebase/app';
+import { useAuthState } from 'react-firebase-hooks/auth';
 
 function Header(props) {
+  const [user, loading] = useAuthState(props.auth);
   const history = useHistory();
+  const joggersRef = props.firestore.collection('joggers');
 
   async function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    await props.auth.signInWithPopup(provider);
+    await props.auth.signInWithPopup(provider).then(addNewUser);
 
-    if (!props.loading) {
+    if (!loading) {
       history.push('/profile');
+    }
+  }
+
+  function addNewUser(authData) {
+    if (authData.additionalUserInfo.isNewUser) {
+      joggersRef.doc(`${authData.user.uid}`).set({
+        displayName: authData.user.displayName,
+        jogRoutes: 0,
+      });
     }
   }
 
   function logOut() {
     props.auth.signOut();
-    history.push('/');
   }
 
   return (
@@ -32,7 +43,7 @@ function Header(props) {
           <li>
             <Link to="/explore">Explore</Link>
           </li>
-          {props.user ? (
+          {user ? (
             <>
               <li>
                 <Link to="/create">Plan a route</Link>
@@ -57,8 +68,7 @@ function Header(props) {
 
 Header.propTypes = {
   auth: PropTypes.object.isRequired,
-  user: PropTypes.object,
-  loading: PropTypes.bool.isRequired,
+  firestore: PropTypes.object.isRequired,
 };
 
 export default Header;
