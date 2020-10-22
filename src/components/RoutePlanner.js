@@ -109,6 +109,7 @@ function RoutePlanner(props) {
   }
 
   function saveJogRoute() {
+    var batch = props.firestore.batch();
     var laps = jogRoute.map(function getName(lap) {
       return lap.name;
     });
@@ -124,12 +125,19 @@ function RoutePlanner(props) {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
-    // TODO
-    // create batched writes here
-    newJogRouteRef.set(newJogRoute);
-    currentJoggerRef.update({
+    batch.set(newJogRouteRef, newJogRoute);
+    batch.update(currentJoggerRef, {
       jogRoutes: firebase.firestore.FieldValue.increment(1),
     });
+
+    batch
+      .commit()
+      .then(function success() {
+        console.log('Batch writes successfully commited ✨!');
+      })
+      .catch(function error(err) {
+        console.error('Batch write failed 🚧! Reason:', err);
+      });
 
     clearJogRoute();
   }
