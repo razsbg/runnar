@@ -29,7 +29,6 @@ function Header(props) {
 
   function logOut() {
     props.auth.signOut();
-    history.push('/');
   }
 
   return (

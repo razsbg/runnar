@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -30,7 +30,7 @@ function Main(props) {
           ) : user ? (
             <Profile user={user} firestore={props.firestore} />
           ) : (
-            <NotFound />
+            <Redirect from="/profile" to="/" />
           )}
         </Route>
         <Route exact path="/create">
@@ -42,9 +42,10 @@ function Main(props) {
               <RoutePlanner user={user} firestore={props.firestore} />
             </DndProvider>
           ) : (
-            <NotFound />
+            <Redirect from="/create" to="/" />
           )}
         </Route>
+        <NotFound />
       </Switch>
     </main>
   );
