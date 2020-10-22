@@ -25,3 +25,9 @@ export function formatFirebaseTimestamp(timestamp) {
 
   return dateTimeFormatter.format(date);
 }
+
+export function sortByTimestampDesc(timestampKey) {
+  return function (doc1, doc2) {
+    return doc1[timestampKey].toDate() > doc2[timestampKey].toDate() ? -1 : 1;
+  };
+}

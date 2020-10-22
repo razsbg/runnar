@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
 
-import { formatFirebaseTimestamp } from '../helpers';
+import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
 
 import '../scss/components/_profile.scss';
 
@@ -13,10 +13,17 @@ function Profile(props) {
     '==',
     props.user.uid
   );
-  const [snapshots, loading] = useCollectionDataOnce(
-    currentUserIsOwnerQuery,
-    jogRoutesRef
-  );
+  const [jogRoutes, loading] = useCollectionDataOnce(currentUserIsOwnerQuery);
+
+  function renderJogRoute(jogRoute, index) {
+    return (
+      <div key={index} className="jog-routes__item">
+        <p>Created@{formatFirebaseTimestamp(jogRoute.createdAt)}</p>
+        <p>Laps: {jogRoute.laps.length}</p>
+        <p>Length: {jogRoute.length}km</p>
+      </div>
+    );
+  }
 
   return (
     <div className="profile">
@@ -29,13 +36,7 @@ function Profile(props) {
       ) : (
         <div className="jog-routes">
           <h3>Your jog routes</h3>
-          {snapshots.map((jogRoute, index) => (
-            <div key={index} className="jog-routes__item">
-              <p>Created@{formatFirebaseTimestamp(jogRoute.createdAt)}</p>
-              <p>Laps: {jogRoute.laps.length}</p>
-              <p>Length: {jogRoute.length}km</p>
-            </div>
-          ))}
+          {jogRoutes.sort(sortByTimestampDesc('createdAt')).map(renderJogRoute)}
         </div>
       )}
     </div>
