@@ -19,23 +19,23 @@
   background-color: white;
   transition: background-color 0.15s ease-in-out;
 
-  .route-lap--small {
+  .route-lap--s {
     grid-column: 1 / 2;
   }
 
-  .route-lap--medium {
+  .route-lap--m {
     grid-column: 2 / 3;
   }
 
-  .route-lap--large {
+  .route-lap--l {
     grid-column: 3 / 4;
   }
 
-  .route-lap--xlarge {
+  .route-lap--xl {
     grid-column: 4 / 5;
   }
 
-  .route-lap--xxlarge {
+  .route-lap--xxl {
     grid-column: 5 / 6;
   }
 }
