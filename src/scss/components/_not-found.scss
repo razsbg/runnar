@@ -1,5 +1,9 @@
+@use "../color-palette" as palette;
+
 .not-found {
   padding: 2rem 3rem;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
   border-radius: 7px;
   grid-column: 1 / -1;
   align-self: center;
@@ -8,7 +12,7 @@
   align-items: center;
   flex-direction: column;
   color: white;
-  background-color: rgba(23, 190, 187, 0.7);
+  background-color: palette.$secondary--light;
   text-shadow: -1px 3px rgba(0, 0, 0, 0.85);
   box-shadow: -5px 7px 0px 0px rgba(0, 0, 0, 0.8);
 }
