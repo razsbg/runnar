@@ -35,8 +35,16 @@ function Profile(props) {
         <h3>Loading...</h3>
       ) : (
         <div className="jog-routes">
-          <h3>Your jog routes</h3>
-          {jogRoutes.sort(sortByTimestampDesc('createdAt')).map(renderJogRoute)}
+          {jogRoutes.length === 0 ? (
+            <h3>You don't have any jog routes. Go and create some 🏃‍♂️!</h3>
+          ) : (
+            <>
+              <h3>Your jog routes</h3>
+              {jogRoutes
+                .sort(sortByTimestampDesc('createdAt'))
+                .map(renderJogRoute)}
+            </>
+          )}
         </div>
       )}
     </div>
