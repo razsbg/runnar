@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { formatDistanceInKms } from '../helpers';
-
 import '../scss/components/_route-lap.scss';
 
 function RouteLap(props) {
@@ -12,8 +10,7 @@ function RouteLap(props) {
       onClick={() => props.removeLap(props.index)}
     >
       <h4>{props.lapName}</h4>
-      <span className="order">#{props.index + 1}</span>
-      <p>{formatDistanceInKms(props.length)} km</p>
+      <p className="order">&#35;{props.index + 1}</p>
     </div>
   );
 }
