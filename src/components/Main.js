@@ -10,6 +10,7 @@ import RoutePlanner from './RoutePlanner';
 import Explore from './Explore';
 import Home from './Home';
 import Profile from './Profile';
+import Single from './Single';
 import NotFound from './NotFound';
 
 function Main(props) {
@@ -44,6 +45,9 @@ function Main(props) {
           ) : (
             <Redirect from="/create" to="/" />
           )}
+        </Route>
+        <Route path="/jog-route/:jogRouteId">
+          <Single firestore={props.firestore} />
         </Route>
         <NotFound />
       </Switch>

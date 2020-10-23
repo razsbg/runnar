@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
 import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
@@ -8,17 +9,21 @@ import '../scss/components/_explore.scss';
 
 function Explore(props) {
   const jogRoutesRef = props.firestore.collection('jogRoutes');
-  const [jogRoutes, loading] = useCollectionData(jogRoutesRef);
+  const [jogRoutes, loading] = useCollectionData(jogRoutesRef, {
+    idField: 'id',
+  });
 
   function renderJogRoute(jogRoute, index) {
     return (
       <div key={index} className="jog-route">
-        <p>
-          <span>Created by: {jogRoute.owner.displayName}</span>
-        </p>
-        <p>@{formatFirebaseTimestamp(jogRoute.createdAt)}</p>
-        <p className="jog-route__laps">Laps: {jogRoute.laps.length}</p>
-        <p>Length: {jogRoute.length}km</p>
+        <Link to={`/jog-route/${jogRoute.id}`}>
+          <p>
+            <span>Created by: {jogRoute.owner.displayName}</span>
+          </p>
+          <p>@{formatFirebaseTimestamp(jogRoute.createdAt)}</p>
+          <p className="jog-route__laps">Laps: {jogRoute.laps.length}</p>
+          <p>Length: {jogRoute.length}km</p>
+        </Link>
       </div>
     );
   }
@@ -29,7 +34,7 @@ function Explore(props) {
       {loading ? (
         <h4>Loading...</h4>
       ) : (
-        <div className="explore__routes">
+        <div className="container">
           {jogRoutes.sort(sortByTimestampDesc('createdAt')).map(renderJogRoute)}
         </div>
       )}
