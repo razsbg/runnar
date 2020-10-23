@@ -28,7 +28,10 @@ function Lap(props) {
       data-testid={`lap-${lap.name}`}
     >
       <h3>{lap.name}</h3>
-      <p>Total length: {formatDistanceInKms(props.lap.getLapLength())}km</p>
+      <p>
+        <span className="label">Total length</span>
+        {formatDistanceInKms(props.lap.getLapLength())}km
+      </p>
     </div>
   );
 }

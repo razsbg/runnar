@@ -1,12 +1,14 @@
 @use "../color-palette" as palette;
 
 .lap {
-  padding: 0.5em 1em;
+  padding: 1.25rem 1.5rem;
   border: 2px solid palette.$dark;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   background-color: white;
   cursor: pointer;
+  font-size: 1.25rem;
 
   &:hover {
     border-color: palette.$primary;
@@ -18,7 +20,7 @@
     color: white;
   }
 
-  .lap-label {
+  .label {
     font-weight: 600;
 
     &:after {
@@ -27,16 +29,8 @@
     }
   }
 
-  .lap__side:after {
-    content: 'm,';
-    margin-right: 0.25em;
-  }
-
-  .lap__side:last-child:after {
-    content: 'm';
-  }
-
-  > * {
-    margin: 0;
+  h3 {
+    font-size: 3rem;
+    text-transform: uppercase;
   }
 }
