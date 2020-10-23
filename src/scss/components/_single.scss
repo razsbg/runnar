@@ -1,0 +1,39 @@
+@use "../color-palette" as palette;
+
+.single {
+  grid-column: 1 / -1;
+  font-weight: 300;
+
+  > *:not(:last-child) {
+    margin-bottom: 1.5rem;
+  }
+
+  .label {
+    font-weight: 400;
+
+    &:after {
+      content: ':';
+      margin-right: 0.25em;
+    }
+  }
+
+  .single__author {
+    font-size: 1.75rem;
+  }
+
+  .single__timestamp:before {
+    content: '@';
+    color: palette.$primary--light;
+    font-weight: 500;
+  }
+
+  .single__laps-order > span:not(.label) {
+    padding: 0.5em 0.25em;
+    border: 1px solid black;
+    text-transform: uppercase;
+
+    &:not(:last-child) {
+      margin-right: 0.25em;
+    }
+  }
+}

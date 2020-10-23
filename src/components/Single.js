@@ -5,6 +5,8 @@ import { useDocumentData } from 'react-firebase-hooks/firestore';
 
 import { formatFirebaseTimestamp } from '../helpers';
 
+import '../scss/components/_single.scss';
+
 function Single(props) {
   const match = useRouteMatch();
   const jogRouteRef = props.firestore
@@ -15,17 +17,26 @@ function Single(props) {
   return (
     <div className="single">
       {loading ? (
-        <h3>Loading...</h3>
+        <h2>Loading...</h2>
       ) : (
         <>
-          <p>
-            <span>Auth {jogRoute.owner.displayName}</span>
-            <span>@{formatFirebaseTimestamp(jogRoute.createdAt)}</span>
+          <p className="single__author">
+            <span className="label">By</span>
+            <span>{jogRoute.owner.displayName}</span>
+            <span className="single__timestamp">
+              {formatFirebaseTimestamp(jogRoute.createdAt)}
+            </span>
           </p>
-          <p>Length: {jogRoute.length}km</p>
-          <p>Laps: {jogRoute.laps.length}</p>
-          <p>
-            Laps order:
+          <p className="single__length">
+            <span className="label">Length</span>
+            {jogRoute.length}km
+          </p>
+          <p className="single__no-of-laps">
+            <span className="label">No. of laps</span>
+            {jogRoute.laps.length}
+          </p>
+          <p className="single__laps-order">
+            <span className="label">Laps order</span>
             {jogRoute.laps.map(function renderLap(lapName, index) {
               return <span key={index}>{lapName}</span>;
             })}
