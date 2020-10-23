@@ -15,16 +15,14 @@ function Explore(props) {
 
   function renderJogRoute(jogRoute, index) {
     return (
-      <div key={index} className="jog-route">
-        <Link to={`/jog-route/${jogRoute.id}`}>
-          <p>
-            <span>Created by: {jogRoute.owner.displayName}</span>
-          </p>
-          <p>@{formatFirebaseTimestamp(jogRoute.createdAt)}</p>
-          <p className="jog-route__laps">Laps: {jogRoute.laps.length}</p>
-          <p>Length: {jogRoute.length}km</p>
-        </Link>
-      </div>
+      <Link to={`/jog-route/${jogRoute.id}`} key={index} className="jog-route">
+        <h4>Length: {jogRoute.length}km</h4>
+        <p>Laps: {jogRoute.laps.length}</p>
+        <p className="jog-route__author">
+          Author: {jogRoute.owner.displayName}
+          <span>@{formatFirebaseTimestamp(jogRoute.createdAt)}</span>
+        </p>
+      </Link>
     );
   }
 

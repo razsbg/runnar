@@ -9,12 +9,19 @@
   }
 }
 
-.explore__routes {
+.container {
   display: flex;
   flex-wrap: wrap;
   grid-gap: 20px;
 
   .jog-route {
     @include jog-route;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      background-color: palette.$primary;
+      color: white;
+    }
   }
 }
