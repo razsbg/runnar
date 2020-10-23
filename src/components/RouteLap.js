@@ -9,8 +9,10 @@ function RouteLap(props) {
       className={`route-lap ${props.className ?? ''}`}
       onClick={() => props.removeLap(props.index)}
     >
-      <h4>{props.lapName}</h4>
-      <p className="order">&#35;{props.index + 1}</p>
+      <h4>
+        <span>{props.lapName}</span>
+        <span className="order">{props.index + 1}</span>
+      </h4>
     </div>
   );
 }
