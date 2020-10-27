@@ -34,42 +34,41 @@ $easeInOut: cubic-bezier(0.42, 0, 0.58, 1);
 }
 
 .route-lap {
-  border: 1px solid palette.$secondary;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: palette.$light;
+  padding: 0.25rem 0.5rem;
+  border-radius: 5px;
+  position: relative;
+  text-align: center;
+  text-shadow: -2px 2px palette.$dark;
+  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
+    0 0 0 1px rgba(10, 10, 10, 0.02);
+  color: white;
   cursor: pointer;
   animation: swoop-in-left 0.25s forwards;
 
   h4 {
-    padding: 0.25rem 0.5rem;
-    border-radius: 5px;
     font-size: 3rem;
     text-transform: uppercase;
-    text-shadow: -2px 2px palette.$dark;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.5);
-    position: relative;
   }
 
   .order {
     padding: 0.5em 0.75em;
+    border: 2px solid white;
     border-radius: 50%;
-    background-color: palette.$warning;
     position: absolute;
-    top: -3px;
-    right: 0;
+    top: 1px;
+    right: 3px;
     transform: translate(50%, -50%);
+    background-color: palette.$darker;
     color: white;
-    font-size: 0.25em;
     font-weight: 600;
     line-height: 1.15;
-    text-shadow: -1px 2px black;
+    text-shadow: none;
+    z-index: 1;
   }
 
   &:after {
     content: '❌';
+    border-radius: 5px;
     position: absolute;
     top: 0;
     right: 0;
@@ -80,6 +79,7 @@ $easeInOut: cubic-bezier(0.42, 0, 0.58, 1);
     align-items: center;
     opacity: 0;
     font-size: 1.35em;
+    text-shadow: none;
     transition: opacity 0.15s ease-in-out;
     background-color: palette.$danger;
   }

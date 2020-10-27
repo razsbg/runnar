@@ -6,13 +6,11 @@ import '../scss/components/_route-lap.scss';
 function RouteLap(props) {
   return (
     <div
-      className={`route-lap ${props.className ?? ''}`}
+      className={`route-lap route-lap--${props.lapName}`}
       onClick={() => props.removeLap(props.index)}
     >
-      <h4>
-        <span>{props.lapName}</span>
-        <span className="order">{props.index + 1}</span>
-      </h4>
+      <h4>{props.lapName}</h4>
+      <span className="order">{props.index + 1}</span>
     </div>
   );
 }
@@ -22,7 +20,6 @@ RouteLap.propTypes = {
   lapName: PropTypes.string.isRequired,
   length: PropTypes.number.isRequired,
   removeLap: PropTypes.func.isRequired,
-  className: PropTypes.string,
 };
 
 export default RouteLap;

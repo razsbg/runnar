@@ -7,36 +7,41 @@
 }
 
 .drop-zone {
-  padding: 1em;
+  padding: 1.5rem;
   border: 1px dashed palette.$dark;
   grid-row: 2 / 3;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-auto-flow: dense;
-  grid-auto-rows: 100px;
-  grid-gap: 15px;
+  grid-auto-rows: min-content;
+  grid-gap: 25px;
   position: relative;
   background-color: white;
   transition: background-color 0.15s ease-in-out;
 
   .route-lap--s {
     grid-column: 1 / 2;
+    background-color: palette.$success--lighter;
   }
 
   .route-lap--m {
     grid-column: 2 / 3;
+    background-color: palette.$warning--lighter;
   }
 
   .route-lap--l {
     grid-column: 3 / 4;
+    background-color: palette.$orange;
   }
 
   .route-lap--xl {
     grid-column: 4 / 5;
+    background-color: palette.$danger--lighter;
   }
 
   .route-lap--xxl {
     grid-column: 5 / 6;
+    background-color: palette.$danger;
   }
 }
 

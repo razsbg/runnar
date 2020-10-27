@@ -24,7 +24,7 @@ function Lap(props) {
   return (
     <div
       ref={drag}
-      className={`lap${isDragging ? ' lap--dragging' : ''}`}
+      className={`lap lap--${props.lap.name}`}
       data-testid={`lap-${lap.name}`}
     >
       <h3>{lap.name}</h3>

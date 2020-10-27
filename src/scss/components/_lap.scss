@@ -2,22 +2,59 @@
 
 .lap {
   padding: 1.25rem 1.5rem;
-  border: 2px solid palette.$dark;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background-color: white;
   cursor: pointer;
   font-size: 1.25rem;
+  box-shadow: 0 0 0 1px rgba(10, 10, 10, 0.04);
+  overflow: hidden;
+  position: relative;
 
-  &:hover {
-    border-color: palette.$primary;
+  > * {
+    position: relative;
+    z-index: 1;
   }
 
-  &.lap--dragging {
-    opacity: 0.75;
-    background-color: palette.$secondary;
+  &:before {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    left: calc(-100% + 10px);
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    transition: transform 0.15s ease-in-out;
+  }
+
+  &:hover {
     color: white;
+
+    &:before {
+      transform: translateX(calc(100% - 10px));
+    }
+  }
+
+  &.lap--s:before {
+    background-color: palette.$success--lighter;
+  }
+
+  &.lap--m:before {
+    background-color: palette.$warning--lighter;
+  }
+
+  &.lap--l:before {
+    background-color: palette.$orange;
+  }
+
+  &.lap--xl:before {
+    background-color: palette.$danger--lighter;
+  }
+
+  &.lap--xxl:before {
+    background-color: palette.$danger;
   }
 
   .label {

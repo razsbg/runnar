@@ -1,12 +1,23 @@
-// color palette
+// BRAND
 $primary: #17bebb;
 $primary--light: #92f2f0;
 $secondary: #ff8552;
 $secondary--light: #ffb899;
+
+// LIGHT - DARK
 $light: #fffbfa;
 $gray: #828a95;
 $dark: #1c1d21;
 $darker: #121619;
-$danger: #f03a47;
-$success: #109648;
+
+// COLORS
+$orange: #f68a3c;
+
+// STATES
+$success: #13b958;
+$danger: #ee1b29;
 $warning: #f6ae2d;
+
+$success--lighter: #59ee97;
+$danger--lighter: #f1414d;
+$warning--lighter: #ffc15e;
