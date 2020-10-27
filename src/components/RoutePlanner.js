@@ -42,21 +42,21 @@ function RoutePlanner(props) {
       const currentLastLap = [...jogRoute].pop();
 
       switch (lap.name) {
-        case 'small':
-        case 'medium':
-        case 'large':
+        case 's':
+        case 'm':
+        case 'l':
           if (currentLastLap.name === laps.xxlarge.name) {
             isEligible = false;
           }
 
           break;
-        case 'xlarge':
+        case 'xl':
           if (currentLastLap.name === laps.medium.name) {
             isEligible = false;
           }
 
           break;
-        case 'xxlarge':
+        case 'xxl':
           if (
             currentLastLap.name === laps.small.name ||
             currentLastLap.name === laps.medium.name ||
