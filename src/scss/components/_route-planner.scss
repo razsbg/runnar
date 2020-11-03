@@ -19,6 +19,10 @@
   background-color: white;
   transition: background-color 0.15s ease-in-out;
 
+  &:empty {
+    background: center no-repeat url('../../assets/jogger.svg');
+  }
+
   .route-lap--s {
     grid-column: 1 / 2;
     background-color: palette.$success--lighter;
@@ -58,7 +62,7 @@
   opacity: 0.8;
 }
 
-.drop-zone--eligible {
+.drop-zone--eligible.drop-zone--eligible {
   background-color: palette.$success;
 
   &:after {
@@ -66,7 +70,7 @@
   }
 }
 
-.drop-zone--ineligible {
+.drop-zone--ineligible.drop-zone--ineligible {
   background-color: palette.$danger;
 
   &:after {
