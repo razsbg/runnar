@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { useRouteMatch } from 'react-router';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 
+import Loader from './Loader';
+
 import { formatFirebaseTimestamp } from '../helpers';
 
 import '../scss/components/_single.scss';
@@ -17,7 +19,7 @@ function Single(props) {
   return (
     <div className="single">
       {loading ? (
-        <h2>Loading...</h2>
+        <Loader />
       ) : (
         <>
           <p className="single__author">
