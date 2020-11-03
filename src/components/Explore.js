@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
+import Loader from './Loader';
+
 import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
 
 import '../scss/components/_explore.scss';
@@ -30,7 +32,7 @@ function Explore(props) {
     <div className="explore">
       <h3>Explore jogging routes</h3>
       {loading ? (
-        <h4>Loading...</h4>
+        <Loader />
       ) : (
         <div className="container">
           {jogRoutes.sort(sortByTimestampDesc('createdAt')).map(renderJogRoute)}

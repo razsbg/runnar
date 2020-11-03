@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
 
+import Loader from './Loader';
+
 import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
 
 import '../scss/components/_profile.scss';
@@ -32,7 +34,7 @@ function Profile(props) {
         <h2>{props.user.displayName}</h2>
       </div>
       {loading ? (
-        <h3>Loading...</h3>
+        <Loader />
       ) : (
         <div className="jog-routes">
           {jogRoutes.length === 0 ? (
