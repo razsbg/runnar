@@ -32,6 +32,13 @@
 
     .jog-routes__item {
       @include jog-route;
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.15s ease-in-out;
+
+      &:hover {
+        color: palette.$secondary;
+      }
     }
   }
 }

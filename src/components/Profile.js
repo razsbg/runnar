@@ -7,6 +7,7 @@ import Loader from './Loader';
 import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
 
 import '../scss/components/_profile.scss';
+import { Link } from 'react-router-dom';
 
 function Profile(props) {
   const jogRoutesRef = props.firestore.collection('jogRoutes');
@@ -15,15 +16,21 @@ function Profile(props) {
     '==',
     props.user.uid
   );
-  const [jogRoutes, loading] = useCollectionDataOnce(currentUserIsOwnerQuery);
+  const [jogRoutes, loading] = useCollectionDataOnce(currentUserIsOwnerQuery, {
+    idField: 'id',
+  });
 
   function renderJogRoute(jogRoute, index) {
     return (
-      <div key={index} className="jog-routes__item">
+      <Link
+        to={`/jog-route/${jogRoute.id}`}
+        key={index}
+        className="jog-routes__item"
+      >
         <p>Created@{formatFirebaseTimestamp(jogRoute.createdAt)}</p>
         <p>Laps: {jogRoute.laps.length}</p>
         <p>Length: {jogRoute.length}km</p>
-      </div>
+      </Link>
     );
   }
 
