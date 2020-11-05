@@ -17,7 +17,12 @@ function Explore(props) {
 
   function renderJogRoute(jogRoute, index) {
     return (
-      <Link to={`/jog-route/${jogRoute.id}`} key={index} className="jog-route">
+      <Link
+        to={`/jog-route/${jogRoute.id}`}
+        key={index}
+        style={{ animationDelay: index !== 0 ? `${index * 0.1}s` : null }}
+        className="jog-route"
+      >
         <h4>Length: {jogRoute.length}km</h4>
         <p>Laps: {jogRoute.laps.length}</p>
         <p className="jog-route__author">

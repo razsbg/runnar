@@ -1,5 +1,6 @@
 @use "../color-palette" as palette;
 @use "../mixins/jog-route" as *;
+@use "../mixins/fade-in" as *;
 
 .profile {
   grid-column: 1 / -1;
@@ -31,13 +32,14 @@
     }
 
     .jog-routes__item {
-      @include jog-route;
       text-decoration: none;
       color: inherit;
-      transition: color 0.15s ease-in-out;
+
+      @include jog-route;
+      @include fade-in;
 
       &:hover {
-        color: palette.$secondary;
+        border-color: palette.$secondary;
       }
     }
   }

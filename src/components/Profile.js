@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
 
 import Loader from './Loader';
@@ -7,7 +8,6 @@ import Loader from './Loader';
 import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
 
 import '../scss/components/_profile.scss';
-import { Link } from 'react-router-dom';
 
 function Profile(props) {
   const jogRoutesRef = props.firestore.collection('jogRoutes');
@@ -26,6 +26,7 @@ function Profile(props) {
         to={`/jog-route/${jogRoute.id}`}
         key={index}
         className="jog-routes__item"
+        style={{ animationDelay: index !== 0 ? `${index * 0.1}s` : null }}
       >
         <p>Created@{formatFirebaseTimestamp(jogRoute.createdAt)}</p>
         <p>Laps: {jogRoute.laps.length}</p>

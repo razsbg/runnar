@@ -1,0 +1,17 @@
+@keyframes fade-in {
+  0% {
+    transform: translateY(-10px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@mixin fade-in($transition-time: 0.125) {
+  opacity: 0;
+  animation: fade-in #{$transition-time}s ease-in-out forwards;
+  transition: opacity #{$transition-time}s ease-in-out,
+    transform #{$transition-time}s ease-in-out;
+}
