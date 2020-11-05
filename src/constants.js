@@ -3,29 +3,29 @@ export const DragItemTypes = {
 };
 
 let lap = {
-  getLapLength: function () {
+  getLapLength() {
     return this.sides.reduce((acc, curr) => acc + curr, 0);
   },
 };
 
 export let laps = {
-  small: Object.assign(Object.create(lap), {
+  s: Object.assign(Object.create(lap), {
     name: 's',
     sides: [170, 49, 180, 54],
   }),
-  medium: Object.assign(Object.create(lap), {
+  m: Object.assign(Object.create(lap), {
     name: 'm',
     sides: [350, 74, 350, 59],
   }),
-  large: Object.assign(Object.create(lap), {
+  l: Object.assign(Object.create(lap), {
     name: 'l',
     sides: [520, 74, 530, 54],
   }),
-  xlarge: Object.assign(Object.create(lap), {
+  xl: Object.assign(Object.create(lap), {
     name: 'xl',
     sides: [600, 50, 650, 85],
   }),
-  xxlarge: Object.assign(Object.create(lap), {
+  xxl: Object.assign(Object.create(lap), {
     name: 'xxl',
     sides: [1100, 74, 1100, 82],
   }),

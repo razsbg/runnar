@@ -3,6 +3,9 @@
 @mixin jog-route {
   padding: 1.5rem;
   border: 1px solid palette.$dark;
+  display: flex;
+  flex-direction: column;
+  grid-gap: 0.75em;
   background-color: white;
 
   > *:not(:last-child) {

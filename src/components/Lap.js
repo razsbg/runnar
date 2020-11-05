@@ -24,13 +24,13 @@ function Lap(props) {
   return (
     <div
       ref={drag}
-      className={`lap lap--${props.lap.name}`}
+      className={`lap lap--${lap.name}`}
       data-testid={`lap-${lap.name}`}
     >
       <h3>{lap.name}</h3>
       <p>
         <span className="label">Total length</span>
-        {formatDistanceInKms(props.lap.getLapLength())}km
+        {formatDistanceInKms(lap.getLapLength())}km
       </p>
     </div>
   );

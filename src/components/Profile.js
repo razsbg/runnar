@@ -22,16 +22,31 @@ function Profile(props) {
 
   function renderJogRoute(jogRoute, index) {
     return (
-      <Link
-        to={`/jog-route/${jogRoute.id}`}
+      <div
         key={index}
-        className="jog-routes__item"
+        className="jog-route"
         style={{ animationDelay: index !== 0 ? `${index * 0.1}s` : null }}
       >
         <p>Created@{formatFirebaseTimestamp(jogRoute.createdAt)}</p>
         <p>Laps: {jogRoute.laps.length}</p>
         <p>Length: {jogRoute.length}km</p>
-      </Link>
+        <div className="jog-route__actions">
+          <Link
+            to={{
+              pathname: '/create',
+              state: {
+                jogRoute,
+              },
+            }}
+            className="edit"
+          >
+            Edit
+          </Link>
+          <Link to={`/jog-route/${jogRoute.id}`} className="details">
+            Details
+          </Link>
+        </div>
+      </div>
     );
   }
 
@@ -44,7 +59,7 @@ function Profile(props) {
       {loading ? (
         <Loader />
       ) : (
-        <div className="jog-routes">
+        <div className="container">
           {jogRoutes.length === 0 ? (
             <h3>You don't have any jog routes. Go and create some 🏃‍♂️!</h3>
           ) : (

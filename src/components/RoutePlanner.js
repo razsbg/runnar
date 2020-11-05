@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router';
 import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
 import firebase from 'firebase/app';
@@ -17,22 +18,37 @@ function RoutePlanner(props) {
     .collection('joggers')
     .doc(props.user.uid);
 
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state) {
+      let currentJogRoute = [];
+
+      for (let lapName of location.state.jogRoute.laps) {
+        currentJogRoute.push({
+          name: lapName,
+          length: laps[lapName].getLapLength(),
+        });
+      }
+
+      setJogRoute(currentJogRoute);
+    }
+  }, [location.state]);
+
   const [{ isOver: isOverDropZone, canDrop }, drop] = useDrop({
     accept: DragItemTypes.LAP,
     drop: (item) => {
       setJogRoute([...jogRoute, { name: item.name, length: item.length }]);
     },
-    canDrop: (item) => {
-      if (isLapEligible(item)) {
-        return true;
-      }
-
-      return false;
+    canDrop: function canDrop(item) {
+      return isLapEligible(item);
     },
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
-      canDrop: !!monitor.canDrop(),
-    }),
+    collect: function collect(monitor) {
+      return {
+        isOver: !!monitor.isOver(),
+        canDrop: !!monitor.canDrop(),
+      };
+    },
   });
 
   function isLapEligible(lap) {
@@ -45,22 +61,22 @@ function RoutePlanner(props) {
         case 's':
         case 'm':
         case 'l':
-          if (currentLastLap.name === laps.xxlarge.name) {
+          if (currentLastLap.name === laps.xxl.name) {
             isEligible = false;
           }
 
           break;
         case 'xl':
-          if (currentLastLap.name === laps.medium.name) {
+          if (currentLastLap.name === laps.m.name) {
             isEligible = false;
           }
 
           break;
         case 'xxl':
           if (
-            currentLastLap.name === laps.small.name ||
-            currentLastLap.name === laps.medium.name ||
-            currentLastLap.name === laps.large.name
+            currentLastLap.name === laps.s.name ||
+            currentLastLap.name === laps.m.name ||
+            currentLastLap.name === laps.l.name
           ) {
             isEligible = false;
           }
@@ -110,7 +126,7 @@ function RoutePlanner(props) {
 
   function saveJogRoute() {
     var batch = props.firestore.batch();
-    var laps = jogRoute.map(function getName(lap) {
+    var laps = jogRoute.map(function keepOnlyName(lap) {
       return lap.name;
     });
     var jogRouteLength = getJogRouteLength();
