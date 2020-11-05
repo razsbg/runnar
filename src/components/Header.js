@@ -31,6 +31,47 @@ function Header(props) {
     props.auth.signOut();
   }
 
+  function renderNav() {
+    var nav = (
+      <>
+        <nav className="nav" role="navigation">
+          <ul>
+            <li>
+              <Link to="/explore">Explore</Link>
+            </li>
+            {renderUserLinks()}
+          </ul>
+        </nav>
+        {renderAuthenticationButton()}
+      </>
+    );
+
+    return nav;
+
+    /* ************************************* */
+
+    function renderUserLinks() {
+      return user ? (
+        <>
+          <li>
+            <Link to="/create">Plan a route</Link>
+          </li>
+          <li>
+            <Link to="/profile">My profile</Link>
+          </li>
+        </>
+      ) : null;
+    }
+
+    function renderAuthenticationButton() {
+      return (
+        <button onClick={user ? logOut : signInWithGoogle}>
+          {user ? 'Log out' : 'Log in with Google'}
+        </button>
+      );
+    }
+  }
+
   return (
     <header className="header" data-testid="header">
       <div className="logo" data-testid="logo">
@@ -38,30 +79,7 @@ function Header(props) {
           <Link to="/">runnar</Link>
         </h1>
       </div>
-      <nav className="nav" role="navigation">
-        <ul>
-          <li>
-            <Link to="/explore">Explore</Link>
-          </li>
-          {user ? (
-            <>
-              <li>
-                <Link to="/create">Plan a route</Link>
-              </li>
-              <li>
-                <Link to="/profile">My profile</Link>
-              </li>
-              <li>
-                <button onClick={logOut}>Log out</button>
-              </li>
-            </>
-          ) : (
-            <li>
-              <button onClick={signInWithGoogle}>Log in with Google</button>
-            </li>
-          )}
-        </ul>
-      </nav>
+      {renderNav()}
     </header>
   );
 }

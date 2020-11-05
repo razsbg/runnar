@@ -70,6 +70,7 @@ h6 {
   display: grid;
   grid-template-columns: 1fr;
   grid-auto-flow: column;
+  grid-gap: 1em;
   align-items: center;
   color: palette.$primary;
 
