@@ -28,6 +28,18 @@ export function formatFirebaseTimestamp(timestamp) {
 
 export function sortByTimestampDesc(timestampKey) {
   return function (doc1, doc2) {
+    if (doc1[timestampKey] === undefined && doc2[timestampKey] === undefined) {
+      return 0;
+    }
+
+    if (doc1[timestampKey] === undefined && doc2[timestampKey] !== undefined) {
+      return 1;
+    }
+
+    if (doc1[timestampKey] !== undefined && doc2[timestampKey] === undefined) {
+      return -1;
+    }
+
     return doc1[timestampKey].toDate() > doc2[timestampKey].toDate() ? -1 : 1;
   };
 }
