@@ -19,6 +19,7 @@ function RoutePlanner(props) {
     .doc(props.user.uid);
 
   const location = useLocation();
+  const isEditExistingRoute = !!location.state;
 
   useEffect(() => {
     if (location.state) {
@@ -158,13 +159,47 @@ function RoutePlanner(props) {
     clearJogRoute();
   }
 
+  function updateJogRoute() {
+    var jogRouteRef = props.firestore
+      .collection('jogRoutes')
+      .doc(location.state.jogRoute.id);
+
+    var laps = jogRoute.map(function keepOnlyName(lap) {
+      return lap.name;
+    });
+    var jogRouteLength = getJogRouteLength();
+
+    jogRouteRef.update({
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      laps,
+      length: jogRouteLength,
+    });
+  }
+
+  function renderActions() {
+    if (jogRoute.length > 1) {
+      return (
+        <div className="route-planner__actions">
+          <button
+            className="button button--large"
+            onClick={isEditExistingRoute ? updateJogRoute : saveJogRoute}
+          >
+            {isEditExistingRoute ? 'Update' : 'Save'} jog route
+          </button>
+          <button className="button button--large" onClick={clearJogRoute}>
+            Clear
+          </button>
+        </div>
+      );
+    }
+
+    return null;
+  }
+
   return (
     <div className="route-planner" data-testid="route-planner">
-      <h2>Route planner</h2>
-      {jogRoute.length > 1 && (
-        <button onClick={saveJogRoute}>Save route</button>
-      )}
-      <button onClick={clearJogRoute}>Clear jog route</button>
+      <h2>Route Planner - {isEditExistingRoute ? 'edit' : 'create'}</h2>
+      {renderActions()}
       <div
         ref={drop}
         className={getDropzoneClassNames()}
