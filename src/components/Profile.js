@@ -27,6 +27,9 @@ function Profile(props) {
         className="jog-route"
         style={{ animationDelay: index !== 0 ? `${index * 0.1}s` : null }}
       >
+        {jogRoute?.updatedAt && (
+          <p>Updated@{formatFirebaseTimestamp(jogRoute.updatedAt)}</p>
+        )}
         <p>Created@{formatFirebaseTimestamp(jogRoute.createdAt)}</p>
         <p>Laps: {jogRoute.laps.length}</p>
         <p>Length: {jogRoute.length}km</p>
@@ -66,7 +69,7 @@ function Profile(props) {
             <>
               <h3>Your jog routes</h3>
               {jogRoutes
-                .sort(sortByTimestampDesc('createdAt'))
+                .sort(sortByTimestampDesc('updatedAt'))
                 .map(renderJogRoute)}
             </>
           )}
