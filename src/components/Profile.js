@@ -6,6 +6,7 @@ import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
 import Loader from './Loader';
 
 import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
+import { LOCAL_STORAGE_KEYS } from '../constants';
 
 import '../scss/components/_profile.scss';
 
@@ -35,13 +36,22 @@ function Profile(props) {
         <p>Length: {jogRoute.length}km</p>
         <div className="jog-route__actions">
           <Link
-            to={{
-              pathname: '/create',
-              state: {
-                jogRoute,
-              },
-            }}
+            to={`/edit/${jogRoute.id}`}
             className="edit"
+            onClick={function persistJogRouteInLocalStorage() {
+              localStorage.setItem(
+                LOCAL_STORAGE_KEYS.CURRENTLY_EDITING_JOG_ROUTE,
+                JSON.stringify(jogRoute)
+              );
+            }}
+            onAuxClick={function persistJogRouteIfOpenedInNewTab(event) {
+              if (event.button === 1 || event.ctrlKey || event.shiftKey) {
+                localStorage.setItem(
+                  LOCAL_STORAGE_KEYS.CURRENTLY_EDITING_JOG_ROUTE,
+                  JSON.stringify(jogRoute)
+                );
+              }
+            }}
           >
             Edit
           </Link>

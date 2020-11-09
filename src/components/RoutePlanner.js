@@ -1,40 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router';
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
 import firebase from 'firebase/app';
 
 import RouteLap from './RouteLap';
 
-import { DragItemTypes, laps } from '../constants';
+import { DragItemTypes, laps, LOCAL_STORAGE_KEYS } from '../constants';
 import { formatDistanceInKms } from '../helpers';
 
 import '../scss/components/_route-planner.scss';
 
 function RoutePlanner(props) {
   const [jogRoute, setJogRoute] = useState([]);
+  const currentlyEditingJogRouteId = useRef(null);
+  const isEditExistingRoute = useRef(
+    !!localStorage.getItem(LOCAL_STORAGE_KEYS.CURRENTLY_EDITING_JOG_ROUTE)
+  );
+
   const newJogRouteRef = props.firestore.collection('jogRoutes').doc();
   const currentJoggerRef = props.firestore
     .collection('joggers')
     .doc(props.user.uid);
 
-  const location = useLocation();
-  const isEditExistingRoute = !!location.state;
-
-  useEffect(() => {
-    if (location.state) {
-      let currentJogRoute = [];
-
-      for (let lapName of location.state.jogRoute.laps) {
-        currentJogRoute.push({
-          name: lapName,
-          length: laps[lapName].getLapLength(),
-        });
-      }
-
-      setJogRoute(currentJogRoute);
-    }
-  }, [location.state]);
+  useEffect(initialiseEditExistingJogRoute, []);
 
   const [{ isOver: isOverDropZone, canDrop }, drop] = useDrop({
     accept: DragItemTypes.LAP,
@@ -51,6 +39,27 @@ function RoutePlanner(props) {
       };
     },
   });
+
+  function initialiseEditExistingJogRoute() {
+    var currentlyEditingJogRoute = JSON.parse(
+      localStorage.getItem(LOCAL_STORAGE_KEYS.CURRENTLY_EDITING_JOG_ROUTE)
+    );
+
+    if (currentlyEditingJogRoute) {
+      let normalizedJogRoute = [];
+
+      for (let lapName of currentlyEditingJogRoute.laps) {
+        normalizedJogRoute.push({
+          name: lapName,
+          length: laps[lapName].getLapLength(),
+        });
+      }
+
+      setJogRoute(normalizedJogRoute);
+      currentlyEditingJogRouteId.current = currentlyEditingJogRoute.id;
+      localStorage.removeItem(LOCAL_STORAGE_KEYS.CURRENTLY_EDITING_JOG_ROUTE);
+    }
+  }
 
   function isLapEligible(lap) {
     var isEligible = true;
@@ -162,7 +171,7 @@ function RoutePlanner(props) {
   function updateJogRoute() {
     var jogRouteRef = props.firestore
       .collection('jogRoutes')
-      .doc(location.state.jogRoute.id);
+      .doc(currentlyEditingJogRouteId.current);
 
     var laps = jogRoute.map(function keepOnlyName(lap) {
       return lap.name;
@@ -182,9 +191,11 @@ function RoutePlanner(props) {
         <div className="route-planner__actions">
           <button
             className="button button--large"
-            onClick={isEditExistingRoute ? updateJogRoute : saveJogRoute}
+            onClick={
+              isEditExistingRoute.current ? updateJogRoute : saveJogRoute
+            }
           >
-            {isEditExistingRoute ? 'Update' : 'Save'} jog route
+            {isEditExistingRoute.current ? 'Update' : 'Save'} jog route
           </button>
           <button className="button button--large" onClick={clearJogRoute}>
             Clear
@@ -198,7 +209,7 @@ function RoutePlanner(props) {
 
   return (
     <div className="route-planner" data-testid="route-planner">
-      <h2>Route Planner - {isEditExistingRoute ? 'edit' : 'create'}</h2>
+      <h2>Route Planner - {isEditExistingRoute.current ? 'edit' : 'create'}</h2>
       {renderActions()}
       <div
         ref={drop}

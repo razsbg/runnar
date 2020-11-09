@@ -2,6 +2,13 @@ export const DragItemTypes = {
   LAP: 'lap',
 };
 
+var LOCAL_STORAGE_KEYS = Object.create(null);
+Object.assign(LOCAL_STORAGE_KEYS, {
+  CURRENTLY_EDITING_JOG_ROUTE: 'currentlyEditingJogRoute',
+});
+
+export { LOCAL_STORAGE_KEYS };
+
 let lap = {
   getLapLength() {
     return this.sides.reduce((acc, curr) => acc + curr, 0);
