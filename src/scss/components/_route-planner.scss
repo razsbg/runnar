@@ -97,3 +97,13 @@
     }
   }
 }
+
+.route-planner__actions {
+  display: flex;
+  grid-gap: 1.5em;
+  justify-content: stretch;
+
+  > * {
+    flex: 1;
+  }
+}

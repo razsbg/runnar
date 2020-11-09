@@ -22,7 +22,7 @@
     }
   }
 
-  .jog-routes {
+  .container {
     display: flex;
     flex-wrap: wrap;
     grid-gap: 20px;
@@ -31,15 +31,48 @@
       width: 100%;
     }
 
-    .jog-routes__item {
+    .jog-route {
       text-decoration: none;
       color: inherit;
+      box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
+        0 0 0 1px rgba(10, 10, 10, 0.02);
 
       @include jog-route;
       @include fade-in;
 
       &:hover {
         border-color: palette.$secondary;
+      }
+
+      .jog-route__actions {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        > * {
+          padding: 0.5em 0.75em;
+          border: 1px solid transparent;
+          border-radius: 4px;
+          display: inline-block;
+          color: inherit;
+          text-decoration: none;
+          letter-spacing: 0.02em;
+          font-weight: 600;
+          transition: border-color 0.125s ease-in-out;
+
+          &:hover {
+            border-color: palette.$darker;
+          }
+        }
+
+        .edit {
+          background-color: palette.$warning--lighter;
+        }
+
+        .details {
+          background-color: palette.$success--lighter;
+        }
       }
     }
   }

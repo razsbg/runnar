@@ -46,6 +46,18 @@ function Main(props) {
             <Redirect from="/create" to="/" />
           )}
         </Route>
+        <Route path="/edit/:jogRouteId">
+          {loading ? (
+            <h3>Loading...</h3>
+          ) : user ? (
+            <DndProvider backend={HTML5Backend}>
+              <Laps />
+              <RoutePlanner user={user} firestore={props.firestore} />
+            </DndProvider>
+          ) : (
+            <Redirect from="/edit/:jogRouteId" to="/" />
+          )}
+        </Route>
         <Route path="/jog-route/:jogRouteId">
           <Single firestore={props.firestore} />
         </Route>
