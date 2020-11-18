@@ -14,7 +14,6 @@ function Lap(props) {
     item: {
       type: DragItemTypes.LAP,
       name: lap.name,
-      length: lap.getLapLength(),
     },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),

@@ -12,22 +12,16 @@ import '../scss/components/_route-planner.scss';
 
 function RoutePlanner(props) {
   const [jogRoute, setJogRoute] = useState([]);
-  const currentlyEditingJogRouteId = useRef(null);
-  const isEditExistingRoute = useRef(
-    !!localStorage.getItem(LOCAL_STORAGE_KEYS.CURRENTLY_EDITING_JOG_ROUTE)
-  );
 
-  const newJogRouteRef = props.firestore.collection('jogRoutes').doc();
-  const currentJoggerRef = props.firestore
-    .collection('joggers')
-    .doc(props.user.uid);
+  const currentlyEditingJogRouteId = useRef();
+  const isEditExistingRoute = useRef();
 
-  useEffect(initialiseEditExistingJogRoute, []);
+  useEffect(initWithEditExistingRoute, []);
 
   const [{ isOver: isOverDropZone, canDrop }, drop] = useDrop({
     accept: DragItemTypes.LAP,
     drop: (item) => {
-      setJogRoute([...jogRoute, { name: item.name, length: item.length }]);
+      setJogRoute([...jogRoute, item.name]);
     },
     canDrop: function canDrop(item) {
       return isLapEligible(item);
@@ -40,7 +34,7 @@ function RoutePlanner(props) {
     },
   });
 
-  function initialiseEditExistingJogRoute() {
+  function initWithEditExistingRoute() {
     var currentlyEditingJogRoute = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_KEYS.CURRENTLY_EDITING_JOG_ROUTE)
     );
@@ -49,14 +43,12 @@ function RoutePlanner(props) {
       let normalizedJogRoute = [];
 
       for (let lapName of currentlyEditingJogRoute.laps) {
-        normalizedJogRoute.push({
-          name: lapName,
-          length: laps[lapName].getLapLength(),
-        });
+        normalizedJogRoute.push(lapName);
       }
 
       setJogRoute(normalizedJogRoute);
       currentlyEditingJogRouteId.current = currentlyEditingJogRoute.id;
+      isEditExistingRoute.current = true;
       localStorage.removeItem(LOCAL_STORAGE_KEYS.CURRENTLY_EDITING_JOG_ROUTE);
     }
   }
@@ -100,24 +92,6 @@ function RoutePlanner(props) {
     return isEligible;
   }
 
-  function getDropzoneClassNames() {
-    var classNames = ['drop-zone'];
-
-    if (isOverDropZone && canDrop) {
-      classNames.push('drop-zone--eligible');
-    }
-
-    if (isOverDropZone && !canDrop) {
-      classNames.push('drop-zone--ineligible');
-    }
-
-    if (!isOverDropZone && canDrop) {
-      classNames.push('drop-zone--highlight');
-    }
-
-    return classNames.join(' ');
-  }
-
   function removeLap(index) {
     const newJogRoute = [...jogRoute];
     newJogRoute.splice(index, 1);
@@ -125,7 +99,10 @@ function RoutePlanner(props) {
   }
 
   function getJogRouteLength() {
-    const jogRouteLength = jogRoute.reduce((acc, curr) => acc + curr.length, 0);
+    const jogRouteLength = jogRoute.reduce(
+      (total, currentLapName) => total + laps[currentLapName].getLapLength(),
+      0
+    );
 
     return formatDistanceInKms(jogRouteLength);
   }
@@ -134,11 +111,14 @@ function RoutePlanner(props) {
     setJogRoute([]);
   }
 
-  function saveJogRoute() {
+  async function saveJogRoute() {
     var batch = props.firestore.batch();
-    var laps = jogRoute.map(function keepOnlyName(lap) {
-      return lap.name;
-    });
+
+    var newJogRouteRef = props.firestore.collection('jogRoutes').doc();
+    var currentJoggerRef = props.firestore
+      .collection('joggers')
+      .doc(props.user.uid);
+
     var jogRouteLength = getJogRouteLength();
 
     var newJogRoute = {
@@ -146,7 +126,7 @@ function RoutePlanner(props) {
         displayName: props.user.displayName,
         uid: props.user.uid,
       },
-      laps,
+      laps: jogRoute,
       length: jogRouteLength,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
@@ -156,33 +136,30 @@ function RoutePlanner(props) {
       jogRoutes: firebase.firestore.FieldValue.increment(1),
     });
 
-    batch
-      .commit()
-      .then(function success() {
-        console.log('Batch writes successfully commited ✨!');
-      })
-      .catch(function error(err) {
-        console.error('Batch write failed 🚧! Reason:', err);
-      });
-
-    clearJogRoute();
+    try {
+      await batch.commit();
+      console.log('Batch writes successfully commited ✨!');
+    } catch (err) {
+      console.error('Batch write failed 🚧! Reason:', err);
+    }
   }
 
-  function updateJogRoute() {
+  async function updateJogRoute() {
     var jogRouteRef = props.firestore
       .collection('jogRoutes')
       .doc(currentlyEditingJogRouteId.current);
 
-    var laps = jogRoute.map(function keepOnlyName(lap) {
-      return lap.name;
-    });
     var jogRouteLength = getJogRouteLength();
 
-    jogRouteRef.update({
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-      laps,
-      length: jogRouteLength,
-    });
+    try {
+      await jogRouteRef.update({
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        laps: jogRoute,
+        length: jogRouteLength,
+      });
+    } catch (err) {
+      console.error('Update jog route failed 🚧! Reason:', err);
+    }
   }
 
   function renderActions() {
@@ -207,25 +184,42 @@ function RoutePlanner(props) {
     return null;
   }
 
+  function getDropzoneClassNames() {
+    var classNames = ['drop-zone'];
+
+    if (isOverDropZone && canDrop) {
+      classNames.push('drop-zone--eligible');
+    }
+
+    if (isOverDropZone && !canDrop) {
+      classNames.push('drop-zone--ineligible');
+    }
+
+    if (!isOverDropZone && canDrop) {
+      classNames.push('drop-zone--highlight');
+    }
+
+    return classNames.join(' ');
+  }
+
   return (
     <div className="route-planner" data-testid="route-planner">
       <h2>Route Planner - {isEditExistingRoute.current ? 'edit' : 'create'}</h2>
-      {renderActions()}
       <div
         ref={drop}
         className={getDropzoneClassNames()}
         data-testid="drop-zone"
       >
-        {jogRoute.map((lap, index) => (
+        {jogRoute.map((lapName, index) => (
           <RouteLap
             key={index}
             index={index}
-            lapName={lap.name}
-            length={lap.length}
+            lapName={lapName}
             removeLap={removeLap}
           />
         ))}
       </div>
+      {renderActions()}
       {jogRoute.length >= 1 && (
         <p className="route-planner__length">
           <span className="label">Total length</span>

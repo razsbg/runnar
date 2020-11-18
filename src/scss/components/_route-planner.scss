@@ -99,11 +99,7 @@
 }
 
 .route-planner__actions {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
   grid-gap: 1.5em;
-  justify-content: stretch;
-
-  > * {
-    flex: 1;
-  }
 }

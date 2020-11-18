@@ -18,7 +18,6 @@ function RouteLap(props) {
 RouteLap.propTypes = {
   index: PropTypes.number.isRequired,
   lapName: PropTypes.string.isRequired,
-  length: PropTypes.number.isRequired,
   removeLap: PropTypes.func.isRequired,
 };
 
