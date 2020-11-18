@@ -1,10 +1,10 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
+import { AuthContext } from './App';
 import Laps from './Laps';
 import RoutePlanner from './RoutePlanner';
 import Explore from './Explore';
@@ -13,8 +13,10 @@ import Profile from './Profile';
 import Single from './Single';
 import NotFound from './NotFound';
 
-function Main(props) {
-  const [user, loading] = useAuthState(props.auth);
+function Main() {
+  const auth = useContext(AuthContext);
+
+  const [user, loading] = useAuthState(auth);
 
   return (
     <main className="main" data-testid="main">
@@ -23,13 +25,13 @@ function Main(props) {
           <Home />
         </Route>
         <Route exact path="/explore">
-          <Explore firestore={props.firestore} />
+          <Explore />
         </Route>
         <Route exact path="/profile">
           {loading ? (
             <h3>Loading...</h3>
           ) : user ? (
-            <Profile user={user} firestore={props.firestore} />
+            <Profile user={user} />
           ) : (
             <Redirect from="/profile" to="/" />
           )}
@@ -40,7 +42,7 @@ function Main(props) {
           ) : user ? (
             <DndProvider backend={HTML5Backend}>
               <Laps />
-              <RoutePlanner user={user} firestore={props.firestore} />
+              <RoutePlanner user={user} />
             </DndProvider>
           ) : (
             <Redirect from="/create" to="/" />
@@ -52,24 +54,19 @@ function Main(props) {
           ) : user ? (
             <DndProvider backend={HTML5Backend}>
               <Laps />
-              <RoutePlanner user={user} firestore={props.firestore} />
+              <RoutePlanner user={user} />
             </DndProvider>
           ) : (
             <Redirect from="/edit/:jogRouteId" to="/" />
           )}
         </Route>
         <Route path="/jog-route/:jogRouteId">
-          <Single firestore={props.firestore} />
+          <Single />
         </Route>
         <NotFound />
       </Switch>
     </main>
   );
 }
-
-Main.propTypes = {
-  auth: PropTypes.object.isRequired,
-  firestore: PropTypes.object.isRequired,
-};
 
 export default Main;

@@ -1,17 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import firebase from 'firebase/app';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-function Header(props) {
-  const [user, loading] = useAuthState(props.auth);
+import { FirestoreContext, AuthContext } from './App';
+
+function Header() {
+  const auth = useContext(AuthContext);
+  const firestore = useContext(FirestoreContext);
+
+  const [user, loading] = useAuthState(auth);
+
   const history = useHistory();
-  const joggersRef = props.firestore.collection('joggers');
+  const joggersRef = firestore.collection('joggers');
 
   async function signInWithGoogle() {
     const provider = new firebase.auth.GoogleAuthProvider();
-    await props.auth.signInWithPopup(provider).then(addNewUser);
+    await auth.signInWithPopup(provider).then(addNewUser);
 
     if (!loading) {
       history.push('/profile');
@@ -28,7 +33,7 @@ function Header(props) {
   }
 
   function logOut() {
-    props.auth.signOut();
+    auth.signOut();
   }
 
   function renderNav() {
@@ -83,10 +88,5 @@ function Header(props) {
     </header>
   );
 }
-
-Header.propTypes = {
-  auth: PropTypes.object.isRequired,
-  firestore: PropTypes.object.isRequired,
-};
 
 export default Header;

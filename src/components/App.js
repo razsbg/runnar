@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
@@ -19,12 +19,19 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const firestore = firebase.firestore();
 
+export const FirestoreContext = createContext();
+export const AuthContext = createContext();
+
 function App() {
   return (
     <div className="app">
-      <Header auth={auth} firestore={firestore} />
-      <Main auth={auth} firestore={firestore} />
-      <Footer />
+      <FirestoreContext.Provider value={firestore}>
+        <AuthContext.Provider value={auth}>
+          <Header />
+          <Main />
+          <Footer />
+        </AuthContext.Provider>
+      </FirestoreContext.Provider>
     </div>
   );
 }

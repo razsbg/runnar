@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
 
+import { FirestoreContext } from './App';
 import Loader from './Loader';
 
 import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
@@ -11,7 +12,8 @@ import { LOCAL_STORAGE_KEYS } from '../constants';
 import '../scss/components/_profile.scss';
 
 function Profile(props) {
-  const jogRoutesRef = props.firestore.collection('jogRoutes');
+  const firestore = useContext(FirestoreContext);
+  const jogRoutesRef = firestore.collection('jogRoutes');
   const currentUserIsOwnerQuery = jogRoutesRef.where(
     'owner.uid',
     '==',
@@ -91,7 +93,6 @@ function Profile(props) {
 
 Profile.propTypes = {
   user: PropTypes.object.isRequired,
-  firestore: PropTypes.object.isRequired,
 };
 
 export default Profile;

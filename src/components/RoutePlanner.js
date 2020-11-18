@@ -1,8 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
 import firebase from 'firebase/app';
 
+import { FirestoreContext } from './App';
 import RouteLap from './RouteLap';
 
 import { DragItemTypes, laps, LOCAL_STORAGE_KEYS } from '../constants';
@@ -11,6 +12,7 @@ import { formatDistanceInKms } from '../helpers';
 import '../scss/components/_route-planner.scss';
 
 function RoutePlanner(props) {
+  const firestore = useContext(FirestoreContext);
   const [jogRoute, setJogRoute] = useState([]);
 
   const currentlyEditingJogRouteId = useRef();
@@ -112,12 +114,10 @@ function RoutePlanner(props) {
   }
 
   async function saveJogRoute() {
-    var batch = props.firestore.batch();
+    var batch = firestore.batch();
 
-    var newJogRouteRef = props.firestore.collection('jogRoutes').doc();
-    var currentJoggerRef = props.firestore
-      .collection('joggers')
-      .doc(props.user.uid);
+    var newJogRouteRef = firestore.collection('jogRoutes').doc();
+    var currentJoggerRef = firestore.collection('joggers').doc(props.user.uid);
 
     var jogRouteLength = getJogRouteLength();
 
@@ -145,7 +145,7 @@ function RoutePlanner(props) {
   }
 
   async function updateJogRoute() {
-    var jogRouteRef = props.firestore
+    var jogRouteRef = firestore
       .collection('jogRoutes')
       .doc(currentlyEditingJogRouteId.current);
 
@@ -231,7 +231,6 @@ function RoutePlanner(props) {
 }
 
 RoutePlanner.propTypes = {
-  firestore: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
 };
 

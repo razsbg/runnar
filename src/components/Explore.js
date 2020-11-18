@@ -1,16 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
+import { FirestoreContext } from './App';
 import Loader from './Loader';
 
 import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
 
 import '../scss/components/_explore.scss';
 
-function Explore(props) {
-  const jogRoutesRef = props.firestore.collection('jogRoutes');
+function Explore() {
+  const firestore = useContext(FirestoreContext);
+
+  const jogRoutesRef = firestore.collection('jogRoutes');
   const [jogRoutes, loading] = useCollectionData(jogRoutesRef, {
     idField: 'id',
   });
@@ -46,9 +48,5 @@ function Explore(props) {
     </div>
   );
 }
-
-Explore.propTypes = {
-  firestore: PropTypes.object.isRequired,
-};
 
 export default Explore;

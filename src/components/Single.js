@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 import { useRouteMatch } from 'react-router';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 
+import { FirestoreContext } from './App';
 import Loader from './Loader';
 
 import { formatFirebaseTimestamp } from '../helpers';
@@ -10,8 +10,9 @@ import { formatFirebaseTimestamp } from '../helpers';
 import '../scss/components/_single.scss';
 
 function Single(props) {
+  const firestore = useContext(FirestoreContext);
   const match = useRouteMatch();
-  const jogRouteRef = props.firestore
+  const jogRouteRef = firestore
     .collection('jogRoutes')
     .doc(match.params.jogRouteId);
   const [jogRoute, loading] = useDocumentData(jogRouteRef);
@@ -48,9 +49,5 @@ function Single(props) {
     </div>
   );
 }
-
-Single.propTypes = {
-  firestore: PropTypes.object.isRequired,
-};
 
 export default Single;
