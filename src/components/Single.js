@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { useRouteMatch } from 'react-router';
 import { useDocumentData } from 'react-firebase-hooks/firestore';
 
-import { FirestoreContext } from './App';
 import Loader from './Loader';
 
+import { FirestoreContext } from './App';
 import { formatFirebaseTimestamp } from '../helpers';
 
 import '../scss/components/_single.scss';

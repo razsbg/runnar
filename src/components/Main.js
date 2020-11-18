@@ -4,7 +4,6 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-import { AuthContext } from './App';
 import Laps from './Laps';
 import RoutePlanner from './RoutePlanner';
 import Explore from './Explore';
@@ -12,6 +11,9 @@ import Home from './Home';
 import Profile from './Profile';
 import Single from './Single';
 import NotFound from './NotFound';
+import Loader from './Loader';
+
+import { AuthContext } from './App';
 
 function Main() {
   const auth = useContext(AuthContext);
@@ -29,7 +31,7 @@ function Main() {
         </Route>
         <Route exact path="/profile">
           {loading ? (
-            <h3>Loading...</h3>
+            <Loader />
           ) : user ? (
             <Profile user={user} />
           ) : (
@@ -38,7 +40,7 @@ function Main() {
         </Route>
         <Route exact path="/create">
           {loading ? (
-            <h3>Loading...</h3>
+            <Loader />
           ) : user ? (
             <DndProvider backend={HTML5Backend}>
               <Laps />
@@ -50,7 +52,7 @@ function Main() {
         </Route>
         <Route path="/edit/:jogRouteId">
           {loading ? (
-            <h3>Loading...</h3>
+            <Loader />
           ) : user ? (
             <DndProvider backend={HTML5Backend}>
               <Laps />

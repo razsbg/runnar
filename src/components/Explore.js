@@ -2,9 +2,9 @@ import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { useCollectionData } from 'react-firebase-hooks/firestore';
 
-import { FirestoreContext } from './App';
 import Loader from './Loader';
 
+import { FirestoreContext } from './App';
 import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
 
 import '../scss/components/_explore.scss';

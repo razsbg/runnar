@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { useDrop } from 'react-dnd';
 import firebase from 'firebase/app';
 
-import { FirestoreContext } from './App';
 import RouteLap from './RouteLap';
 
+import { FirestoreContext } from './App';
 import { DragItemTypes, laps, LOCAL_STORAGE_KEYS } from '../constants';
 import { formatDistanceInKms } from '../helpers';
 

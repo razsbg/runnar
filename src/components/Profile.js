@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useCollectionDataOnce } from 'react-firebase-hooks/firestore';
 
-import { FirestoreContext } from './App';
 import Loader from './Loader';
 
+import { FirestoreContext } from './App';
 import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
 import { LOCAL_STORAGE_KEYS } from '../constants';
 
