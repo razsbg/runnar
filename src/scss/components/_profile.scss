@@ -2,77 +2,83 @@
 @use "../mixins/jog-route" as *;
 @use "../mixins/fade-in" as *;
 
-.profile {
-  grid-column: 1 / -1;
+.user {
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  grid-gap: 1.25rem;
 
-  .user {
-    margin-bottom: 2.5rem;
-    display: flex;
-    align-items: center;
-    grid-gap: 1.25rem;
-
-    img {
-      padding: 0.15rem;
-      border: 2px solid palette.$primary;
-      border-radius: 50%;
-    }
-
-    h2 {
-      font-size: 2.5rem;
-    }
+  img {
+    padding: 0.15rem;
+    border: 2px solid palette.$primary;
+    border-radius: 50%;
   }
 
-  .container {
-    display: flex;
-    flex-wrap: wrap;
-    grid-gap: 20px;
+  h2 {
+    font-size: 2.5rem;
+  }
+}
 
-    h3 {
-      width: 100%;
+.profile .container {
+  display: flex;
+  flex-wrap: wrap;
+  grid-gap: 20px;
+
+  h3 {
+    width: 100%;
+  }
+
+  .jog-route {
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
+      0 0 0 1px rgba(10, 10, 10, 0.02);
+
+    @include jog-route;
+    @include fade-in;
+
+    &:hover {
+      border-color: palette.$secondary;
     }
 
-    .jog-route {
-      text-decoration: none;
-      color: inherit;
-      box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1),
-        0 0 0 1px rgba(10, 10, 10, 0.02);
+    .jog-route__actions {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
 
-      @include jog-route;
-      @include fade-in;
+      > * {
+        padding: 0.5em 0.75em;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        display: inline-block;
+        color: inherit;
+        text-decoration: none;
+        letter-spacing: 0.02em;
+        font-weight: 600;
+        cursor: pointer;
+        transition: border-color 0.125s ease-in-out;
 
-      &:hover {
-        border-color: palette.$secondary;
+        &:hover {
+          border-color: palette.$darker;
+        }
+
+        &:not(:last-child) {
+          margin-right: 0.5em;
+        }
       }
 
-      .jog-route__actions {
-        margin-top: auto;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
+      .edit {
+        background-color: palette.$warning--lighter;
+      }
 
-        > * {
-          padding: 0.5em 0.75em;
-          border: 1px solid transparent;
-          border-radius: 4px;
-          display: inline-block;
-          color: inherit;
-          text-decoration: none;
-          letter-spacing: 0.02em;
-          font-weight: 600;
-          transition: border-color 0.125s ease-in-out;
+      .delete {
+        // color: palette.$light;
+        background-color: palette.$danger--lighter;
+      }
 
-          &:hover {
-            border-color: palette.$darker;
-          }
-        }
-
-        .edit {
-          background-color: palette.$warning--lighter;
-        }
-
-        .details {
-          background-color: palette.$success--lighter;
-        }
+      .details {
+        background-color: palette.$success--lighter;
       }
     }
   }
