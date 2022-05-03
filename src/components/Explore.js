@@ -9,8 +9,6 @@ import { formatFirebaseTimestamp, sortByTimestampDesc } from '../helpers';
 
 import '../scss/components/_explore.scss';
 
-const SOME_CONSTANT = 'constnat';
-
 function Explore() {
   const firestore = useContext(FirestoreContext);
 
