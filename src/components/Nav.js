@@ -5,11 +5,9 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 import { FirestoreContext, AuthContext } from './App';
 
-const { useContext } = React;
-
 function Nav() {
-  const auth = useContext(AuthContext);
-  const firestore = useContext(FirestoreContext);
+  const auth = React.useContext(AuthContext);
+  const firestore = React.useContext(FirestoreContext);
 
   const [user, loading] = useAuthState(auth);
 
@@ -23,14 +21,14 @@ function Nav() {
     if (!loading) {
       history.push('/profile');
     }
-  }
 
-  function addNewUser(authData) {
-    if (authData.additionalUserInfo.isNewUser) {
-      joggersRef.doc(`${authData.user.uid}`).set({
-        displayName: authData.user.displayName,
-        jogRoutes: 0,
-      });
+    function addNewUser(authData) {
+      if (authData.additionalUserInfo.isNewUser) {
+        joggersRef.doc(`${authData.user.uid}`).set({
+          displayName: authData.user.displayName,
+          jogRoutes: 0,
+        });
+      }
     }
   }
 
@@ -38,40 +36,36 @@ function Nav() {
     auth.signOut();
   }
 
-  function renderUserLinks() {
-    return user ? (
-      <>
-        <li>
-          <Link to="/create">Plan a route</Link>
-        </li>
-        <li>
-          <Link to="/profile">My profile</Link>
-        </li>
-      </>
-    ) : null;
-  }
-
-  function renderAuthenticationButton() {
-    return (
-      <button onClick={user ? logOut : signInWithGoogle}>
-        {user ? 'Log out' : 'Log in with Google'}
-      </button>
-    );
-  }
-
   return (
     <>
       <nav className="nav" role="navigation">
-        <ul>
-          <li>
-            <Link to="/explore">Explore</Link>
-          </li>
-          {renderUserLinks()}
-        </ul>
+        <Links user={user} />
       </nav>
-      {renderAuthenticationButton()}
+      <button onClick={user ? logOut : signInWithGoogle}>
+        {user ? 'Log out' : 'Log in with Google'}
+      </button>
     </>
   );
+}
+
+function Links({ user }) {
+  return <ul>
+    <li>
+      <Link to="/explore">Explore</Link>
+    </li>
+    {
+      user ? (
+        <>
+          <li>
+            <Link to="/create">Plan a route</Link>
+          </li>
+          <li>
+            <Link to="/profile">My profile</Link>
+          </li>
+        </>
+      ) : null
+    }
+  </ul>
 }
 
 export default Nav;
