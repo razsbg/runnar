@@ -1,22 +1,22 @@
-import React, { useContext } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import * as React from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
 import Laps from './Laps';
-import RoutePlanner from './RoutePlanner';
-import Explore from './Explore';
 import Home from './Home';
-import Profile from './Profile';
 import Single from './Single';
-import NotFound from './NotFound';
 import Loader from './Loader';
-
+import Explore from './Explore';
+import Profile from './Profile';
+import NotFound from './NotFound';
 import { AuthContext } from './App';
+import RoutePlanner from './RoutePlanner';
+
 
 function Main() {
-  const auth = useContext(AuthContext);
+  const auth = React.useContext(AuthContext);
 
   const [user, loading] = useAuthState(auth);
 
